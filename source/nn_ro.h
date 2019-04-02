@@ -1,3 +1,5 @@
+#include <switch.h>
+
 #define nn_ro_LoadModule _ZN2nn2ro10LoadModuleEPNS0_6ModuleEPKvPvmi
 extern uint64_t _ZN2nn2ro10LoadModuleEPNS0_6ModuleEPKvPvmi(void* module, void const* unk_1, void* unk_2, unsigned long unk_3, int unk_4) LINKABLE;
 
@@ -21,46 +23,56 @@ typedef unsigned long long    undefined7;
 typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
 typedef unsigned short    word;
-typedef struct Module Module, *PModule;
 
-struct Module { /* PlaceHolder Structure */
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-    undefined field_0x10;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined field_0x14;
-    undefined field_0x15;
-    undefined field_0x16;
-    undefined field_0x17;
-    undefined field_0x18;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
-    undefined field_0x1c;
-    undefined field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
+enum module_state {module_unloaded, module_loaded};
+
+typedef struct RoModule_t {
+    struct RoModule_t *next;
+    struct RoModule_t *prev;
+    union {
+        void *rel;
+        void *rela;
+        void *raw;
+    } rela_or_rel_plt;
+    union {
+        void *rel;
+        void *rela;
+    } rela_or_rel;
+    uint64_t module_base;
+    void *dyanmic;
+    bool is_rela;
+    uint64_t rela_or_rel_plt_size;
+    void (*dt_init)(void);
+    void (*dt_fini)(void);
+    uint32_t *hash_bucket;
+    uint32_t *hash_chain;
+    char *dynstr;
+    void *dynsym;
+    uint64_t dynstr_size;
+    void **got;
+    uint64_t rela_dyn_size;
+    uint64_t rel_dyn_size;
+    uint64_t rel_count;
+    uint64_t rela_count;
+    uint64_t hash_nchain_value;
+    uint64_t hash_nbucket_value;
+    uint64_t got_stub_ptr;
+} RoModule;
+
+typedef struct Module_t {
+    RoModule *module;
+    enum module_state state;
+    uintptr_t module_address;
+    uintptr_t bss_address;
+} Module;
+
+typedef struct SmashModule { /* PlaceHolder Structure */
+    Module module;
     void * field_0x20;
     void * src_buffer;
     char name[256]; /* Created by retype action */
     undefined field_0x130;
     undefined field_0x131;
-    undefined4 field_0x132;
-};
+    undefined4 is_loaded; // bool
+} SmashModule;
 
