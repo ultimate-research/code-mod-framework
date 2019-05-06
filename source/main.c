@@ -21,6 +21,8 @@
 #include "l2c_imports.h"
 #include "acmd_imports.h"
 
+#include "script_replacement.h"
+
 u32 __nx_applet_type = AppletType_None;
 
 static char g_heap[0x8000];
@@ -64,6 +66,21 @@ int main(int argc, char *argv[])
     // Get anchor for imports
     // do not remove if you plan on using IMPORT
     ANCHOR_ABS = SaltySDCore_getCodeStart();
+
+    /* 
+        Example of string replacement: 
+        replaces the title screen's version number with the string
+        below.
+    */
+   
+    const char *ver = "Ver. %d.%d.%d";
+    u64 version_string = SaltySDCore_findCode((u8 *)ver, strlen(ver));
+    if (version_string) {
+        SaltySD_Memcpy(version_string, (u64) "Salty v%d%d%d", 13);
+    }
+
+    // Necessary for script replacement
+    SaltySD_function_replace_sym("_ZN3lib8L2CAgent15clear_lua_stackEv", (u64) &clear_lua_stack_replace);
     
     // Add function replacements here
 
