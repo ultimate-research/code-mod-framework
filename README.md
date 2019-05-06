@@ -32,7 +32,71 @@ NOTE: this section is written under the assumption you have you are setup in a s
 TARGET		:=	my_plugin
 ```
 
-## Replacing a function
+## Moveset Edits
+
+### Replacing an AnimCMD function
+AnimCMD controls how each of a character's animations work, and it is split into four categories: `game`, `effect`, `expression`, and `sound`. AnimCMD is frame-based, and takes care of a lot of the scripting required to make up what we consider a character's moveset. For example, almost all normal hitboxes are defined in a character's `game` AnimCMD scripts. From here on, "ACMD" and "AnimCMD" will be used interchangeably.
+
+#### Using this framework to replace animcmd functions
+We'll be working in `script_replacement.h`, specifically `replace_scripts()`. Notice how the code is already laid out:
+```C
+void replace_scripts(L2CAgent* l2c_agent, u8 category, uint kind) {
+    // fighter
+    if (category == 0) {
+        // fox
+        if (kind == 0x7) {
+            lib_L2CAgent_sv_set_function_hash(l2c_agent, &shine_replace, hash40("game_speciallwstart"));
+            lib_L2CAgent_sv_set_function_hash(l2c_agent, &shine_replace, hash40("game_specialairlwstart"));
+        }
+
+        // peach
+        if (kind == 0xD) {
+        }
+    }
+}
+```
+
+In order to specify which character (or weapon, or ...) we would like to replace an ACMD function for, we can use the BATTLE_OBJECT_CATEGORY and KIND of the battle_object associated to the current L2CAgent. Finding which categories correspond to what type of object and which "KIND"s are associated to which characters, search for "BATTLE_OBJECT_CATEGORY" and "FIGHTER_KIND" [here](https://gist.github.com/BenHall-7/4fbe4ae7a466271a24d75fd7589bdaf2).
+
+So we can see that the syntax 
+```C
+lib_L2CAgent_sv_set_function_hash(l2c_agent, &shine_replace, hash40("game_speciallwstart"));
+```
+simply has arguments of the L2CAgent, our replacement function's address, and the hash40 of the animation name. Notice it is prepended by the ACMD type (the others being `"effect_", "expression_", and "sound_").
+
+#### Writing AnimCMD functions
+ACMD functions are completely controlled by frames, so the most important functions are related to frames.
+In our replacement of Fox's shine, we can see the first method of declaring which frame we are working on:
+```C
+// Frame 1
+app_sv_animcmd_frame(l2c_agent->lua_state_agent, 1);
+lib_L2CAgent_clear_lua_stack(l2c_agent);
+app_sv_animcmd_is_excute(l2c_agent->lua_state_agent);
+L2CValue is_excute;
+get_lua_stack(l2c_agent, 1, &is_excute);
+if (is_excute.raw) { ... }
+```
+
+Another method that is frequently used is `wait(x)`, which means the frame `x` frames after the previous frame timer.
+```C
+// assuming the following code occurs after the previous frame check
+// Frame 10
+app_sv_animcmd_wait(l2c_agent->lua_state_agent, 9);
+lib_L2CAgent_clear_lua_stack(l2c_agent);
+app_sv_animcmd_is_excute(l2c_agent->lua_state_agent);
+L2CValue is_excute;
+get_lua_stack(l2c_agent, 1, &is_excute);
+if (is_excute.raw) { ... }
+``` 
+
+Past this, ACMD functions are pretty self-explanatory given their symbol names in the character NROs or exported from the `main`. These functions all work based on the lua_State stack, so in order to use them, you must put your arguments into `L2CValue` variables and push them onto the stack with `push_lua_stack` before calling the ACMD function. However, in ACMD code, calling any function is possible, such as the `lua_bind` functions which do not have any such lua_State wrapping. 
+
+### Replacing a status script function
+[TODO]. It is done with `sv_replace_status_func(l2c_agent, status_kind, key, &replacement_function)`.
+
+## Code Edits
+
+### Replacing a function
 
 There are 3 steps to replacing a function:
 
