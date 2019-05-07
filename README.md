@@ -34,7 +34,7 @@ TARGET		:=	my_plugin
 
 ## Moveset Edits
 
-### Replacing an AnimCMD function
+### Replacing AnimCMD functions
 AnimCMD controls how each of a character's animations work, and it is split into four categories: `game`, `effect`, `expression`, and `sound`. AnimCMD is frame-based, and takes care of a lot of the scripting required to make up what we consider a character's moveset. For example, almost all normal hitboxes are defined in a character's `game` AnimCMD scripts. From here on, "ACMD" and "AnimCMD" will be used interchangeably.
 
 #### Using this framework to replace animcmd functions
@@ -89,10 +89,19 @@ get_lua_stack(l2c_agent, 1, &is_excute);
 if (is_excute.raw) { ... }
 ``` 
 
-Past this, ACMD functions are pretty self-explanatory given their symbol names in the character NROs or exported from the `main`. These functions all work based on the lua_State stack, so in order to use them, you must put your arguments into `L2CValue` variables and push them onto the stack with `push_lua_stack` before calling the ACMD function. However, in ACMD code, calling any function is possible, such as the `lua_bind` functions which do not have any such lua_State wrapping. 
+Past this, ACMD functions are pretty self-explanatory given their symbol names in the character NROs or exported from the `main`. These functions all work based on the lua_State stack, so in order to use them, you must put your arguments into `L2CValue` variables and push them onto the stack with `push_lua_stack` before calling the ACMD function. However, in ACMD code, calling any function is possible, such as the `lua_bind` functions which do not have any such lua_State wrapping.
 
-### Replacing a status script function
-[TODO]. It is done with `sv_replace_status_func(l2c_agent, status_kind, key, &replacement_function)`.
+Just for fun, the code also has the shine hitbox doing 10.0 base damage as well.
+
+
+### Replacing status script functions
+Status script functions are more of the code that the character uses at its base. You can think of it as the lowest layer that controls how a character functions. Once a character is created and set up, it moves from status to status, depending on inputs, where the character is, a natural progression from one status to another, everything. A list of `STATUS_KIND`s can be found [here](https://gist.github.com/BenHall-7/4fbe4ae7a466271a24d75fd7589bdaf2).
+In Smash 4, these were exactly MSC scripts, and we called statuses "actions".) 
+Furthermore, animations and their ACMD code are *called from status scripts*. Just as well, there are many special moves and other actions whose main behavior is instead found in these status scripts (usually because they can't be expressed in ACMD), and pretty much all functionality common to all characters (ledge mechanics, respawning, ... pretty much everything) is controlled by the status scripts in `lua2cpp_common.nro`.
+
+#### Using this framework to replace status script functions
+
+[TODO, with example] It is done with `sv_replace_status_func(l2c_agent, status_kind, key, &replacement_function)`.
 
 ## Code Edits
 
