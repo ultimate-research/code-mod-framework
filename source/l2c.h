@@ -1,9 +1,6 @@
 #ifndef L2C_H
 #define L2C_H
 
-//#include "useful.h"
-//#include "crc32.h"
-
 typedef struct Hash40
 {
     uint64_t hash : 40;

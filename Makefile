@@ -31,7 +31,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	my_plugin
 BUILD		:=	build
-SOURCES		:=	source source/lua
+SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
@@ -47,7 +47,7 @@ CFLAGS	:=	-Wall -O2 \
 
 CFLAGS	+=	$(INCLUDE) -DSWITCH
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -fpermissive -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(TOPDIR)/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)

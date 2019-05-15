@@ -11,7 +11,7 @@ extern uint64_t SaltySDCore_FindSymbolBuiltin(char* name) LINKABLE;
 extern void SaltySDCore_RegisterModule(void* base) LINKABLE;
 extern void SaltySDCore_RegisterBuiltinModule(void* base) LINKABLE;
 extern void SaltySDCore_DynamicLinkModule(void* base) LINKABLE;
-extern void SaltySDCore_ReplaceModuleImport(void* base, char* name, void* new) LINKABLE;
-extern void SaltySDCore_ReplaceImport(char* name, void* new) LINKABLE;
+extern void SaltySDCore_ReplaceModuleImport(void* base, char* name, void* new_replace) LINKABLE;
+extern void SaltySDCore_ReplaceImport(char* name, void* new_replace) LINKABLE;
 
 #endif // SALTYSD_DYNAMIC_H
