@@ -6,12 +6,11 @@
 
 #include "l2c.hpp"
 #include "l2c_imports.hpp"
-#include "acmd_imports.hpp"
+#include "acmd_wrapper.hpp"
 #include "lua_helper.hpp"
 
 #define LOAD64 *(u64 *)
 
-using namespace app::sv_animcmd;
 using namespace lib;
 
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic);
@@ -33,68 +32,16 @@ void replace_scripts(L2CAgent* l2c_agent, u8 category, uint kind) {
 
 // AnimCMD replacement function
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic) {
-    // Frame 1
-    frame(l2c_agent->lua_state_agent, 1);
-    l2c_agent->clear_lua_stack();
-    is_excute(l2c_agent->lua_state_agent);
-    L2CValue is_excute;
-    get_lua_stack(l2c_agent, 1, (u64*)&is_excute);
-    if (is_excute.raw) {
-        // Set up hitboxes
-        l2c_agent->clear_lua_stack();
+    ACMD acmd = ACMD{.l2c_agent = l2c_agent};
 
-        L2CValue hitbox_params[36] = {
-            {.type = L2C_integer, .raw = 0},    // ID
-            {.type = L2C_integer, .raw = 0},    // Unk
-            {.type = L2C_hash, .raw = 0x31ED91FCALL},   // Joint
-            {.type = L2C_number, .raw_float = 10.0}, // Damage
-            {.type = L2C_integer, .raw = 10},   // Angle
-            {.type = L2C_integer, .raw = 32},   // KBG
-            {.type = L2C_integer, .raw = 0},    // WBKB
-            {.type = L2C_integer, .raw = 66},   // BKB
-            {.type = L2C_number, .raw_float = 7.5}, // Size
-            {.type = L2C_number, .raw_float = 0},   // X
-            {.type = L2C_number, .raw_float = 6.5}, // Y
-            {.type = L2C_number, .raw_float = 0},   // Z
-            {.type = L2C_void, .raw = 0},   // X2
-            {.type = L2C_void, .raw = 0},   // Y2
-            {.type = L2C_void, .raw = 0},   // Z2
-            {.type = L2C_number, .raw_float = 1},   // Hitlag
-            {.type = L2C_number, .raw_float = 1},   // SDI
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_number, .raw_float = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_integer, .raw = 1},
-            {.type = L2C_integer, .raw = 1},
-            {.type = L2C_integer, .raw = 63},
-            {.type = L2C_integer, .raw = 31},
-            {.type = L2C_integer, .raw = 0},
-            {.type = L2C_hash, .raw = 0x13462FCFE4LL},
-            {.type = L2C_integer, .raw = 2},
-            {.type = L2C_integer, .raw = 7},
-            {.type = L2C_integer, .raw = 25},
-        };
-
-        for (size_t i = 0; i < 36; i++)
-          l2c_agent->push_lua_stack(&hitbox_params[i]);
-        ATTACK(l2c_agent->lua_state_agent);
-
-        l2c_agent->clear_lua_stack();
-
-        hitbox_params[0].raw = 1; hitbox_params[0].type =  L2C_integer; // ID
-        hitbox_params[4].raw = 24; hitbox_params[4].type =  L2C_integer;    // Angle
-        hitbox_params[5].raw = 45; hitbox_params[5].type =  L2C_integer;    // KBG
-
-        for (size_t i = 0; i < 36; i++)
-          l2c_agent->push_lua_stack(&hitbox_params[i]);
-        ATTACK(l2c_agent->lua_state_agent);
+    acmd.frame(1);
+    if (acmd.is_excute()) {
+        acmd.ATTACK(0, 0, 0x31ED91FCALL, 10.0, 10, 32, 0, 66,   // BKB
+                  7.5, 0, 6.5, 
+                  // 0, 0, 0, //L2C_voids: no X2, Y2, Z2
+                  0, 1, 1, 0, 0, 0, 0,
+                  0, 0, 0, 0, 0, 0, 1, 1, 63, 31, 0, 0x13462FCFE4LL,
+                  2, 7, 25);
     }
     
     return 0;
