@@ -4,12 +4,15 @@
 
 #include "crc32.h"
 
-#include "l2c.h"
+#include "l2c.hpp"
 #include "l2c_imports.hpp"
 #include "acmd_imports.hpp"
 #include "lua_helper.hpp"
 
 #define LOAD64 *(u64 *)
+
+using namespace app::sv_animcmd;
+using namespace lib;
 
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic);
 
@@ -18,8 +21,8 @@ void replace_scripts(L2CAgent* l2c_agent, u8 category, uint kind) {
     if (category == 0) {
         // fox
         if (kind == 0x7) {
-            lib::L2CAgent::sv_set_function_hash((u64*)l2c_agent, &shine_replace, hash40("game_speciallwstart"));
-            lib::L2CAgent::sv_set_function_hash((u64*)l2c_agent, &shine_replace, hash40("game_specialairlwstart"));
+            l2c_agent->sv_set_function_hash(&shine_replace, hash40("game_speciallwstart"));
+            l2c_agent->sv_set_function_hash(&shine_replace, hash40("game_specialairlwstart"));
         }
 
         // peach
@@ -31,14 +34,14 @@ void replace_scripts(L2CAgent* l2c_agent, u8 category, uint kind) {
 // AnimCMD replacement function
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic) {
     // Frame 1
-    app::sv_animcmd::frame(l2c_agent->lua_state_agent, 1);
-    lib::L2CAgent::clear_lua_stack((u64*)l2c_agent);
-    app::sv_animcmd::is_excute(l2c_agent->lua_state_agent);
+    frame(l2c_agent->lua_state_agent, 1);
+    l2c_agent->clear_lua_stack();
+    is_excute(l2c_agent->lua_state_agent);
     L2CValue is_excute;
-    get_lua_stack((u64*)l2c_agent, 1, (u64*)&is_excute);
+    get_lua_stack(l2c_agent, 1, (u64*)&is_excute);
     if (is_excute.raw) {
         // Set up hitboxes
-        lib::L2CAgent::clear_lua_stack((u64*)l2c_agent);
+        l2c_agent->clear_lua_stack();
 
         L2CValue hitbox_params[36] = {
             {.type = L2C_integer, .raw = 0},    // ID
@@ -80,18 +83,18 @@ u64 shine_replace(L2CAgent* l2c_agent, void* variadic) {
         };
 
         for (size_t i = 0; i < 36; i++)
-            lib::L2CAgent::push_lua_stack((u64*)l2c_agent, (u64*)&hitbox_params[i]);
-        app::sv_animcmd::ATTACK(l2c_agent->lua_state_agent);
+          l2c_agent->push_lua_stack(&hitbox_params[i]);
+        ATTACK(l2c_agent->lua_state_agent);
 
-        lib::L2CAgent::clear_lua_stack((u64*)l2c_agent);
+        l2c_agent->clear_lua_stack();
 
         hitbox_params[0].raw = 1; hitbox_params[0].type =  L2C_integer; // ID
         hitbox_params[4].raw = 24; hitbox_params[4].type =  L2C_integer;    // Angle
         hitbox_params[5].raw = 45; hitbox_params[5].type =  L2C_integer;    // KBG
 
         for (size_t i = 0; i < 36; i++)
-            lib::L2CAgent::push_lua_stack((u64*)l2c_agent, (u64*)&hitbox_params[i]);
-        app::sv_animcmd::ATTACK(l2c_agent->lua_state_agent);
+          l2c_agent->push_lua_stack(&hitbox_params[i]);
+        ATTACK(l2c_agent->lua_state_agent);
     }
     
     return 0;

@@ -2,14 +2,12 @@
 
 namespace app::sv_animcmd
 {
-    extern void frame(u64, float) LINKABLE;
-    extern void is_excute(u64) LINKABLE;
-    extern u64 ATTACK(u64) LINKABLE;
-    extern u64 EFFECT(u64) LINKABLE;
-    extern u64 EFFECT_FOLLOW_FLIP_COLOR(u64) LINKABLE;
+    extern void frame(u64, float) asm("_ZN3app10sv_animcmd5frameEP9lua_Statef") LINKABLE;
+    extern void is_excute(u64) asm("_ZN3app10sv_animcmd9is_excuteEP9lua_State") LINKABLE;
+    extern u64 ATTACK(u64) asm("_ZN3app10sv_animcmd6ATTACKEP9lua_State") LINKABLE;
+    extern u64 EFFECT(u64) asm("_ZN3app10sv_animcmd6EFFECTEP9lua_State") LINKABLE;
 }
 
 namespace app::lua_bind
 {
-    extern uint EffectModule__req_on_joint_impl(u64, u64, u64, const Vector3f*, const Vector3f*, float a6, const Vector3f*, const Vector3f*, bool, uint, int, int) LINKABLE;
 }

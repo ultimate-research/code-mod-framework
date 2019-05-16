@@ -8,9 +8,9 @@ void (*SaltySD_installed_hook)(char*, u64) = NULL;
 
 int SaltySD_function_replace(u64 addr, u64 new_func) {
     if (addr) {
-        SaltySD_Memcpy(addr, "\x49\x00\x00\x58", 4); // LDR X9, .+8
-        SaltySD_Memcpy(addr+4, "\x20\x01\x1F\xD6", 4); // BR X9
-        SaltySD_Memcpy(addr+8, &new_func, 8); // .dword newaddr
+      SaltySD_Memcpy(addr, (u64) "\x49\x00\x00\x58", 4); // LDR X9, .+8
+      SaltySD_Memcpy(addr+4, (u64) "\x20\x01\x1F\xD6", 4); // BR X9
+      SaltySD_Memcpy(addr+8, (u64) &new_func, 8); // .dword newaddr
 
         return 0;
     }
@@ -31,5 +31,5 @@ void LoadModule(SmashModule *module, void *param_2, void *param_3, unsigned long
 
 void SaltySD_install_nro_hook(u64 LoadModule_thunk_addr, void hook_main(char*, u64)) {
     SaltySD_installed_hook = hook_main;
-    SaltySD_function_replace(LoadModule_thunk_addr, LoadModule);
+    SaltySD_function_replace(LoadModule_thunk_addr, (u64) LoadModule);
 }

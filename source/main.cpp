@@ -13,7 +13,7 @@
 #include "saltysd_ipc.h"
 #include "saltysd_dynamic.h"
 
-#include "l2c.h"
+#include "l2c.hpp"
 #include "saltysd_helper.hpp"
 #include "l2c_imports.hpp"
 #include "acmd_imports.hpp"
