@@ -12,39 +12,38 @@
 #define LOAD64 *(u64 *)
 
 using namespace lib;
+using namespace app::lua_bind;
 
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic);
 
 void replace_scripts(L2CAgent* l2c_agent, u8 category, uint kind) {
     // fighter
-    if (category == 0) {
+    if (category == CONST_VALUE("BATTLE_OBJECT_CATEGORY_FIGHTER")) {
         // fox
-        if (kind == 0x7) {
+        if (kind == CONST_VALUE("FIGHTER_KIND_FOX")) {
             l2c_agent->sv_set_function_hash(&shine_replace, hash40("game_speciallwstart"));
             l2c_agent->sv_set_function_hash(&shine_replace, hash40("game_specialairlwstart"));
         }
 
         // peach
-        if (kind == 0xD) {
+        if (kind == CONST_VALUE("FIGHTER_KIND_PEACH")) {
         }
     }
 }
 
 // AnimCMD replacement function
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic) {
-    ACMD acmd = ACMD{.l2c_agent = l2c_agent};
+  ACMD acmd = ACMD{.l2c_agent = l2c_agent};
 
-    acmd.frame(1);
-    if (acmd.is_excute()) {
-        acmd.ATTACK(0, 0, 0x31ED91FCALL, 10.0, 10, 32, 0, 66,   // BKB
-                  7.5, 0, 6.5, 
-                  // 0, 0, 0, //L2C_voids: no X2, Y2, Z2
-                  0, 1, 1, 0, 0, 0, 0,
-                  0, 0, 0, 0, 0, 0, 1, 1, 63, 31, 0, 0x13462FCFE4LL,
-                  2, 7, 25);
-    }
-    
-    return 0;
+  acmd.frame(1);
+  if (acmd.is_excute()) {
+    acmd.ATTACK(0, 0, hash40("top"), 10.0, 10, 32, 0, 66, 7.5, 0, 6.5,
+                // 0, 0, 0, //L2C_voids: no X2, Y2, Z2
+                0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 63, 31, 0,
+                0x13462FCFE4LL, 2, 7, 25);
+  }
+
+  return 0;
 }
 
 void* sv_get_status_func(u64 l2c_agentbase, int status_kind, u64 key) {

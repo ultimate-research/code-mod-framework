@@ -3,6 +3,7 @@
 #include <switch.h>
 
 #include "l2c.hpp"
+#include "lua_bind_hash.hpp"
 
 namespace lib
 {
@@ -90,6 +91,16 @@ namespace lib
       u64 sv_set_function_hash(void* func, u64 hash) asm("_ZN3lib8L2CAgent20sv_set_function_hashEPvN3phx6Hash40E") LINKABLE;
       u64 clear_lua_stack() asm("_ZN3lib8L2CAgent15clear_lua_stackEv") LINKABLE;
     };
+
+    bool lua_bind_get_value(u64, int*) asm("_ZN3lib18lua_bind_get_valueIiEEbmRT_") LINKABLE;
+
+    int CONST_VALUE(const char* str) {
+        int val;
+        if (lua_bind_get_value(lua_bind_hash_str(str), &val))
+            return val;
+        else
+            return -1;
+    }
 }
 
 #endif // L2C_IMPORTS_H

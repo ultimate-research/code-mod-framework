@@ -6,6 +6,14 @@
 
 using namespace lib;
 
+namespace app::lua_bind
+{
+    namespace AttackModule
+    {
+        void clear_all(u64) asm("_ZN3app8lua_bind28AttackModule__clear_all_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
+    }
+}
+
 struct ACMD
 {
     L2CAgent* l2c_agent;

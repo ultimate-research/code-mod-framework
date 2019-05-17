@@ -7,7 +7,3 @@ namespace app::sv_animcmd
     extern u64 ATTACK(u64) asm("_ZN3app10sv_animcmd6ATTACKEP9lua_State") LINKABLE;
     extern u64 EFFECT(u64) asm("_ZN3app10sv_animcmd6EFFECTEP9lua_State") LINKABLE;
 }
-
-namespace app::lua_bind
-{
-}
