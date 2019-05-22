@@ -94,7 +94,7 @@ namespace lib
 
     bool lua_bind_get_value(u64, int*) asm("_ZN3lib18lua_bind_get_valueIiEEbmRT_") LINKABLE;
 
-    int CONST_VALUE(const char* str) {
+    int lua_const(const char* str) {
         int val;
         if (lua_bind_get_value(lua_bind_hash_str(str), &val))
             return val;
