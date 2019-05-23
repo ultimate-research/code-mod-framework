@@ -7,6 +7,7 @@
 #include "l2c.hpp"
 #include "l2c_imports.hpp"
 #include "acmd_wrapper.hpp"
+#include "const_value_table.h"
 
 #include "const_value_table.h"
 
