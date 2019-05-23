@@ -5,20 +5,22 @@
 #include "l2c.hpp"
 #include "lua_bind_hash.hpp"
 
+#define LOAD64 *(u64 *)
+
 namespace lib
 {
     enum L2CVarType
-      {
-       L2C_void = 0,
-       L2C_bool = 1,
-       L2C_integer = 2,
-       L2C_number = 3,
-       L2C_pointer = 4,
-       L2C_table = 5,
-       L2C_inner_function = 6,
-       L2C_hash = 7,
-       L2C_string = 8,
-      };
+    {
+      L2C_void = 0,
+      L2C_bool = 1,
+      L2C_integer = 2,
+      L2C_number = 3,
+      L2C_pointer = 4,
+      L2C_table = 5,
+      L2C_inner_function = 6,
+      L2C_hash = 7,
+      L2C_string = 8,
+    };
 
     struct L2CTable_meta
     {
@@ -59,6 +61,36 @@ namespace lib
         struct L2CInnerFunctionBase* raw_innerfunc;
         //std::string* raw_string;
       };
+
+      L2CValue() {}
+
+      L2CValue(bool val) {
+        type = L2C_bool;
+        raw = val;
+      }
+
+      L2CValue(int val) {
+        type = L2C_integer;
+        raw = val;
+      }
+
+      L2CValue(u64 val) {
+        type = L2C_integer;
+        raw = val;
+      }
+
+      L2CValue(float val) {
+        type = L2C_number;
+        raw_float = val;
+      }
+
+      L2CValue(const char* str) {
+        type = L2C_void;
+      }
+
+      operator bool() asm("_ZNK3lib8L2CValuecvbEv") LINKABLE;
+
+      void push_variadic(u64, const char*, void*) asm("_ZN3lib8L2CValue13push_variadicEmPKcRNS_7utility8VariadicE") LINKABLE;
     };
 
     struct L2CAgent
@@ -73,7 +105,7 @@ namespace lib
       uint64_t unk38;
       uint64_t lua_state_agentbase;
 
-      //u64 L2CAgent(u64 lua_state) LINKABLE;
+      L2CAgent* L2CAgent_constr(u64 lua_state) asm("_ZN3lib8L2CAgentC2EP9lua_State") LINKABLE;
       u64 push_lua_stack(L2CValue* l2c_value) asm("_ZN3lib8L2CAgent14push_lua_stackERKNS_8L2CValueE") LINKABLE;
       // pop_lua_stack
       // Notes: 
@@ -88,19 +120,32 @@ namespace lib
       // which is more traditional, i.e. -1 is the top of the stack.
       //__int64_t (*lib_L2CAgent_pop_lua_stack)(__int64_t, int);
       u64 pop_lua_stack(int index) asm("_ZN3lib8L2CAgent13pop_lua_stackEi") LINKABLE;
-      u64 sv_set_function_hash(void* func, u64 hash) asm("_ZN3lib8L2CAgent20sv_set_function_hashEPvN3phx6Hash40E") LINKABLE;
+
+      void get_lua_stack(int index, lib::L2CValue* l2c_val) {
+        asm("mov x8, %x0" : : "r"(l2c_val) : "x8" );
+        pop_lua_stack(index);
+      }
+
+      u64 sv_set_function_hash(u64 (*func)(L2CAgent*, void*), u64 hash) asm("_ZN3lib8L2CAgent20sv_set_function_hashEPvN3phx6Hash40E") LINKABLE;
       u64 clear_lua_stack() asm("_ZN3lib8L2CAgent15clear_lua_stackEv") LINKABLE;
     };
 
     bool lua_bind_get_value(u64, int*) asm("_ZN3lib18lua_bind_get_valueIiEEbmRT_") LINKABLE;
 
-    int CONST_VALUE(const char* str) {
+    int lua_const(const char* str) {
         int val;
         if (lua_bind_get_value(lua_bind_hash_str(str), &val))
             return val;
         else
             return -1;
     }
+
+  namespace utility {
+    namespace Variadic {
+      const char* get_format(void* variadic) asm("_ZNK3lib7utility8Variadic10get_formatEv") LINKABLE;
+    }
+  }
+
 }
 
 #endif // L2C_IMPORTS_H
