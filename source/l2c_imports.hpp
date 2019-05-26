@@ -79,6 +79,11 @@ namespace lib {
 			raw_float = val;
 		}
 
+		L2CValue(double val) {
+			type = L2C_number;
+			raw_float = val;
+		}
+
 		L2CValue(const char* str) {
 			type = L2C_void;
 		}
