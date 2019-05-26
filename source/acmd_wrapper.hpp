@@ -67,8 +67,10 @@ namespace app::lua_bind {
 
 	namespace WorkModule {
 		int get_int(u64, int) asm("_ZN3app8lua_bind24WorkModule__get_int_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
+		void inc_int(u64, int) asm("_ZN3app8lua_bind24WorkModule__inc_int_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
 		int get_param_int(u64, u64, u64) asm("_ZN3app8lua_bind30WorkModule__get_param_int_implEPNS_26BattleObjectModuleAccessorEmm") LINKABLE;
 		void on_flag(u64, int) asm("_ZN3app8lua_bind24WorkModule__on_flag_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
+		void off_flag(u64, int) asm("_ZN3app8lua_bind25WorkModule__off_flag_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
 	}
 }
 
@@ -117,171 +119,103 @@ struct ACMD {
 	}
 
 	void ATTACK(
-		u64 i1,
-		u64 i2,
-		u64 h1,
-		float f1,
-		u64 i3,
-		u64 i4,
-		u64 i5,
-		u64 i6,
-		float f2,
-		float f3,
-		float f4,
-		float f5,
-		//void,
-		//void,
-		//void,
-		float f6,
-		float f7,
-		u64 i7,
-		u64 i8,
-		u64 i9,
-		u64 i10,
-		float f8,
-		u64 i11,
-		u64 i12,
-		u64 i13,
-		u64 i14,
-		u64 i15,
-		u64 i16,
-		u64 i17,
-		u64 i18,
-		u64 i19,
-		u64 i20,
-		u64 h2,
-		u64 i21,
-		u64 i22,
-		u64 i23) {
-		L2CValue hitbox_params[36] = {
-			L2CValue(i1),    // ID
-			L2CValue(i2),    // Unk
-			L2CValue(h1),   // Joint
-			L2CValue(f1), // Damage
-			L2CValue(i3),   // Angle
-			L2CValue(i4),   // KBG
-			L2CValue(i5),    // WBKB
-			L2CValue(i6),   // BKB
-			L2CValue(f2), // Size
-			L2CValue(f3),   // X
-			L2CValue(f4), // Y
-			L2CValue(f5),   // Z
-			L2CValue("void"),   // X2
-			L2CValue("void"),   // Y2
-			L2CValue("void"),   // Z2
-			L2CValue(f6),   // Hitlag
-			L2CValue(f7),   // SDI
-			L2CValue(i7),
-			L2CValue(i8),
-			L2CValue(i9),
-			L2CValue(i10),
-			L2CValue(f8),
-			L2CValue(i11),
-			L2CValue(i12),
-			L2CValue(i13),
-			L2CValue(i14),
-			L2CValue(i15),
-			L2CValue(i16),
-			L2CValue(i17),
-			L2CValue(i18),
-			L2CValue(i19),
-			L2CValue(i20),
-			L2CValue(h2),
-			L2CValue(i21),
-			L2CValue(i22),
-			L2CValue(i23)
-		};
-
-		for (size_t i = 0; i < 36; i++)
-			l2c_agent->push_lua_stack(&hitbox_params[i]);
-
-		app::sv_animcmd::ATTACK(l2c_agent->lua_state_agent);
-
-		l2c_agent->clear_lua_stack();
+		u64 i1,  // ID
+		u64 i2,  // Part
+		u64 h1,  // Bone
+		float f1,  // Damage
+		u64 i3,  // Angle
+		u64 i4,  // KBG
+		u64 i5,  // FKB
+		u64 i6,  // BKB
+		float f2,  // Size
+		float f3,  // X
+		float f4,  // Y
+		float f5,  // Z
+		// X2
+		// Y2
+		// Z2
+		float f6,  // Hitlag
+		float f7,  // SDI
+		u64 i7,  // Clang/Rebound
+		u64 i8,  // Facing Restriction
+		u64 i9,  // Fixed Weight
+		u64 i10, // Shield Damage
+		float f8,  // Trip Chance
+		u64 i11, // Rehite Rate
+		u64 i12, // Reflectable
+		u64 i13, // Absorbable
+		u64 i14, // Flinchless
+		u64 i15, // Disable Hitlag
+		u64 i16, // Direct
+		u64 i17, // Ground/Air
+		u64 i18, // Hit Bits
+		u64 i19, // Collision Bits
+		u64 i20, // Friendly Fire
+		u64 h2,  // Effect
+		u64 i21, // SFX Level
+		u64 i22, // SFX Type
+		u64 i23) {  // Move Type
+		wrap(app::sv_animcmd::ATTACK, {
+			L2CValue(i1), L2CValue(i2), L2CValue(h1), L2CValue(f1),
+			L2CValue(i3), L2CValue(i4), L2CValue(i5), L2CValue(i6),
+			L2CValue(f2), L2CValue(f3), L2CValue(f4), L2CValue(f5),
+			L2CValue("void"), L2CValue("void"), L2CValue("void"), L2CValue(f6),
+			L2CValue(f7), L2CValue(i7), L2CValue(i8), L2CValue(i9),
+			L2CValue(i10), L2CValue(f8), L2CValue(i11), L2CValue(i12),
+			L2CValue(i13), L2CValue(i14), L2CValue(i15), L2CValue(i16),
+ 			L2CValue(i17), L2CValue(i18), L2CValue(i19), L2CValue(i20),
+			L2CValue(h2), L2CValue(i21), L2CValue(i22), L2CValue(i23)
+		});
 	}
 
 	void ATTACK(
-		u64 i1,
-		u64 i2,
-		u64 h1,
-		float f1,
-		u64 i3,
-		u64 i4,
-		u64 i5,
-		u64 i6,
-		float f2,
-		float f3,
-		float f4,
-		float f5,
-		float fX2,
-		float fY2,
-		float fZ2,
-		float f6,
-		float f7,
-		u64 i7,
-		u64 i8,
-		u64 i9,
-		u64 i10,
-		float f8,
-		u64 i11,
-		u64 i12,
-		u64 i13,
-		u64 i14,
-		u64 i15,
-		u64 i16,
-		u64 i17,
-		u64 i18,
-		u64 i19,
-		u64 i20,
-		u64 h2,
-		u64 i21,
-		u64 i22,
-		u64 i23) {
-		L2CValue hitbox_params[36] = {
-			L2CValue(i1),    // ID
-			L2CValue(i2),    // Unk
-			L2CValue(h1),   // Joint
-			L2CValue(f1), // Damage
-			L2CValue(i3),   // Angle
-			L2CValue(i4),   // KBG
-			L2CValue(i5),    // WBKB
-			L2CValue(i6),   // BKB
-			L2CValue(f2), // Size
-			L2CValue(f3),   // X
-			L2CValue(f4), // Y
-			L2CValue(f5),   // Z
-			L2CValue(fX2),   // X2
-			L2CValue(fY2),   // Y2
-			L2CValue(fZ2),   // Z2
-			L2CValue(f6),   // Hitlag
-			L2CValue(f7),   // SDI
-			L2CValue(i7),
-			L2CValue(i8),
-			L2CValue(i9),
-			L2CValue(i10),
-			L2CValue(f8),
-			L2CValue(i11),
-			L2CValue(i12),
-			L2CValue(i13),
-			L2CValue(i14),
-			L2CValue(i15),
-			L2CValue(i16),
-			L2CValue(i17),
-			L2CValue(i18),
-			L2CValue(i19),
-			L2CValue(i20),
-			L2CValue(h2),
-			L2CValue(i21),
-			L2CValue(i22),
-			L2CValue(i23)
-		};
-
-		for (size_t i = 0; i < 36; i++)
-			l2c_agent->push_lua_stack(&hitbox_params[i]);
-
-		app::sv_animcmd::ATTACK(l2c_agent->lua_state_agent);
-
-		l2c_agent->clear_lua_stack();
+		u64 i1,  // ID
+		u64 i2,  // Part
+		u64 h1,  // Bone
+		float f1,  // Damage
+		u64 i3,  // Angle
+		u64 i4,  // KBG
+		u64 i5,  // FKB
+		u64 i6,  // BKB
+		float f2,  // Size
+		float f3,  // X
+		float f4,  // Y
+		float f5,  // Z
+		float fX2, // X2
+		float fY2, // Y2
+		float fZ2, // Z2
+		float f6,  // Hitlag
+		float f7,  // SDI
+		u64 i7,  // Clang/Rebound
+		u64 i8,  // Facing Restriction
+		u64 i9,  // Fixed Weight
+		u64 i10, // Shield Damage
+		float f8,  // Trip Chance
+		u64 i11, // Rehite Rate
+		u64 i12, // Reflectable
+		u64 i13, // Absorbable
+		u64 i14, // Flinchless
+		u64 i15, // Disable Hitlag
+		u64 i16, // Direct
+		u64 i17, // Ground/Air
+		u64 i18, // Hit Bits
+		u64 i19, // Collision Bits
+		u64 i20, // Friendly Fire
+		u64 h2,  // Effect
+		u64 i21, // SFX Level
+		u64 i22, // SFX Type
+		u64 i23) {  // Move Type
+		wrap(app::sv_animcmd::ATTACK, {
+			L2CValue(i1), L2CValue(i2), L2CValue(h1), L2CValue(f1),
+			L2CValue(i3), L2CValue(i4), L2CValue(i5), L2CValue(i6),
+			L2CValue(f2), L2CValue(f3), L2CValue(f4), L2CValue(f5),
+			L2CValue(fX2), L2CValue(fY2), L2CValue(fZ2), L2CValue(f6),
+			L2CValue(f7), L2CValue(i7), L2CValue(i8), L2CValue(i9),
+			L2CValue(i10), L2CValue(f8), L2CValue(i11), L2CValue(i12),
+			L2CValue(i13), L2CValue(i14), L2CValue(i15), L2CValue(i16),
+ 			L2CValue(i17), L2CValue(i18), L2CValue(i19), L2CValue(i20),
+			L2CValue(h2), L2CValue(i21), L2CValue(i22), L2CValue(i23)
+		});
 	}
 };
 
