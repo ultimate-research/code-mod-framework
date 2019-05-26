@@ -43,7 +43,7 @@ u64 shine_replace(L2CAgent* l2c_agent, void* variadic) {
 	ACMD acmd = ACMD(l2c_agent);
 
 	acmd.frame(1);
-	if(acmd.is_excute()){
+	if(acmd.is_excute()) {
 		acmd.ATTACK(0, 0, hash40("top"), 10.0, 10, 32, 0, 66, 7.5, 0.0, 6.5, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_OFF, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_G, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_elec"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_ELEC, ATTACK_REGION_ENERGY);
 		acmd.ATTACK(1, 0, hash40("top"), 1.0, 24, 45, 0, 66, 7.5, 0.0, 6.5, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_OFF, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_A, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_elec"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_ELEC, ATTACK_REGION_ENERGY);
 	}
@@ -100,7 +100,7 @@ u64 ivy_upsmash(L2CAgent* l2c_agent, void* variadic) {
 void* sv_get_status_func(u64 l2c_agentbase, int status_kind, u64 key) {
 	u64 unk48 = LOAD64(l2c_agentbase + 0x48);
 	u64 unk50 = LOAD64(l2c_agentbase + 0x50);
-	if ( 0x2E8BA2E8BA2E8BA3LL * ((unk50 - unk48) >> 4) > (u64)status_kind)
+	if (0x2E8BA2E8BA2E8BA3LL * ((unk50 - unk48) >> 4) > (u64)status_kind)
 		return *(void **)(unk48 + 0xB0LL * status_kind + (key << 32 >> 29));
   
 	return 0;
@@ -109,7 +109,7 @@ void* sv_get_status_func(u64 l2c_agentbase, int status_kind, u64 key) {
 void sv_replace_status_func(u64 l2c_agentbase, int status_kind, u64 key, void* func) {
 	u64 unk48 = LOAD64(l2c_agentbase + 0x48);
 	u64 unk50 = LOAD64(l2c_agentbase + 0x50);
-	if ( 0x2E8BA2E8BA2E8BA3LL * ((unk50 - unk48) >> 4) > (u64)status_kind) {
+	if (0x2E8BA2E8BA2E8BA3LL * ((unk50 - unk48) >> 4) > (u64)status_kind) {
 		*(void **)(unk48 + 0xB0LL * status_kind + (key << 32 >> 29)) = func;
 	}
 }
