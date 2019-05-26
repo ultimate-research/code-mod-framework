@@ -9,28 +9,33 @@ def function_type(name):
 		return "app::sv_animcmd"
 	# TODO: module_access case
 
+def get_arg(arg_str, wrap_args=False):
+	arg_str = arg_str.strip()
+	
+	if "=" in arg_str: # key=value
+		(key, value) = arg_str.split("=", 1);
+		key = key.strip()
+		value = get_arg(value)
+		if wrap_args:
+			value = "L2CValue(" + value + ")"
+		return '/*' + key + '*/ ' + value;
+	
+	if arg_str.islower(): # hash
+		arg_str = "hash40(\"" + arg_str + "\")"
+	if arg_str == "False" or arg_str == "True": # boolean
+		arg_str = arg_str.replace(arg_str, arg_str.lower())
+	
+	if wrap_args:
+		return "L2CValue(" + arg_str + ")"
+	return arg_str
+
 def get_args(args_str, wrap_args=False):
-	args = args_str.split(", ")
-	parsed_args = []
-	for arg in args:
-		parsed_arg = arg
-		actual_arg = arg
-		if "=" in arg:
-			actual_arg = arg.split("=")[1]
-			if wrap_args:
-				actual_arg = "L2CValue(" + actual_arg + ")"
-			parsed_arg = '/*' + arg.split("=")[0] + '*/ ' + actual_arg
-			actual_arg = arg.split("=")[1]
-		if actual_arg.islower():
-			parsed_arg = parsed_arg.replace(actual_arg, "hash40(\"" + actual_arg + "\")")
-		if actual_arg == "False" or actual_arg == "True":
-			parsed_arg = parsed_arg.replace(actual_arg, actual_arg.lower())
-
-		parsed_args += [parsed_arg]
-
-	return ', '.join(parsed_args)
-
-
+	args_str = args_str.strip()
+	parsed_args = [get_arg(arg, wrap_args) for arg in args_str.split(", ")]
+	parsed_str = ', '.join(parsed_args)
+	if wrap_args:
+		return "{ " + parsed_str + " }"
+	return parsed_str
 	
 with open(sys.argv[1]) as f:
 	lines = f.readlines()
