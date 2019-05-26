@@ -45,7 +45,7 @@ u64 shine_replace(L2CAgent* l2c_agent, void* variadic) {
 	acmd.frame(1);
 	if(acmd.is_excute()) {
 		acmd.ATTACK(0, 0, hash40("top"), 10.0, 10, 32, 0, 66, 7.5, 0.0, 6.5, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_OFF, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_G, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_elec"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_ELEC, ATTACK_REGION_ENERGY);
-		acmd.ATTACK(1, 0, hash40("top"), 1.0, 24, 45, 0, 66, 7.5, 0.0, 6.5, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_OFF, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_A, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_elec"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_ELEC, ATTACK_REGION_ENERGY);
+		acmd.ATTACK(1, 0, hash40("top"),  1.0, 24, 45, 0, 66, 7.5, 0.0, 6.5, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_OFF, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_A, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_elec"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_ELEC, ATTACK_REGION_ENERGY);
 	}
 
 	return 0;
@@ -57,7 +57,7 @@ u64 squirtle_utilt(L2CAgent* l2c_agent, void* variadic) {
 	acmd.frame(5);
 	if (acmd.is_excute()) {
 		acmd.ATTACK(0, 0, hash40("head"), 15.0, 88, 100, 0, 30, 10.0, 1.7, 0.7, 0.7, 1.7, 0.7, 0.7, 1.0, 1.0, ATTACK_SETOFF_KIND_ON, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_GA, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_fire"), ATTACK_SOUND_LEVEL_M, COLLISION_SOUND_ATTR_PUNCH, ATTACK_REGION_HEAD);
-		acmd.ATTACK(1, 0, hash40("hip"), 15.0, 88, 100, 0, 30, 10.0, 1.7, 1.2, 1.2, 1.7, 1.2, 1.2, 1.0, 1.0, ATTACK_SETOFF_KIND_ON, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_GA, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_fire"), ATTACK_SOUND_LEVEL_M, COLLISION_SOUND_ATTR_PUNCH, ATTACK_REGION_HEAD);
+		acmd.ATTACK(1, 0, hash40("hip"),  15.0, 88, 100, 0, 30, 10.0, 1.7, 1.2, 1.2, 1.7, 1.2, 1.2, 1.0, 1.0, ATTACK_SETOFF_KIND_ON, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_GA, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_fire"), ATTACK_SOUND_LEVEL_M, COLLISION_SOUND_ATTR_PUNCH, ATTACK_REGION_HEAD);
 	}
 
 	acmd.wait(2);
@@ -65,7 +65,7 @@ u64 squirtle_utilt(L2CAgent* l2c_agent, void* variadic) {
 		AttackModule::clear_all(acmd.module_accessor);
 	}
 
-  return 0;
+	return 0;
 }
 
 u64 ivy_upsmash(L2CAgent* l2c_agent, void* variadic) {
@@ -83,9 +83,9 @@ u64 ivy_upsmash(L2CAgent* l2c_agent, void* variadic) {
 
 	acmd.frame(26);
 	if (acmd.is_excute()) {
-		acmd.wrap(HIT_NODE, {L2CValue(hash40("flower")), L2CValue(HIT_STATUS_XLU)});
+		acmd.wrap(HIT_NODE, { L2CValue(hash40("flower")), L2CValue(HIT_STATUS_XLU) });
 		acmd.ATTACK(0, 0, hash40("top"), 100.0, 82, 78, 0, 78, 20.0, 0.0, 17.0, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_ON, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_GA, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_death"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_FIRE, ATTACK_REGION_BOMB);
-		acmd.ATTACK(1, 0, hash40("top"), 100.0, 82, 78, 0, 78,  12.0, 0.0,  5.0, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_ON, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_GA, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_death"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_FIRE, ATTACK_REGION_BOMB);
+		acmd.ATTACK(1, 0, hash40("top"), 100.0, 82, 78, 0, 78, 12.0, 0.0,  5.0, 0.0, 1.0, 1.0, ATTACK_SETOFF_KIND_ON, ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, COLLISION_SITUATION_MASK_GA, COLLISION_CATEGORY_MASK_ALL, COLLISION_PART_MASK_ALL, false, hash40("collision_attr_death"), ATTACK_SOUND_LEVEL_L, COLLISION_SOUND_ATTR_FIRE, ATTACK_REGION_BOMB);
 	}
 
 	acmd.wait(4);
