@@ -1,4 +1,5 @@
 #include <switch.h>
+
 #include "saltysd_core.h"
 #include "saltysd_ipc.h"
 #include "saltysd_dynamic.h"
