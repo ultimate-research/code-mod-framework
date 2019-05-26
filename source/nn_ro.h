@@ -1,3 +1,6 @@
+#ifndef NN_RO_H
+#define NN_RO_H
+
 #include <switch.h>
 
 #define nn_ro_LoadModule _ZN2nn2ro10LoadModuleEPNS0_6ModuleEPKvPvmi
@@ -76,3 +79,4 @@ typedef struct SmashModule { /* PlaceHolder Structure */
 	undefined4 is_loaded; // bool
 } SmashModule;
 
+# endif // NN_RO_H

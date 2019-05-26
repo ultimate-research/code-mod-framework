@@ -1,3 +1,6 @@
+#ifndef ACMD_IMPORTS_H
+#define ACMD_IMPORTS_H
+
 #include <switch.h>
 
 namespace app::sv_animcmd {
@@ -8,3 +11,5 @@ namespace app::sv_animcmd {
 	extern u64 EFFECT(u64) asm("_ZN3app10sv_animcmd6EFFECTEP9lua_State") LINKABLE;
 	extern u64 HIT_NODE(u64) asm("_ZN3app10sv_animcmd8HIT_NODEEP9lua_State") LINKABLE;
 }
+
+#endif // ACMD_IMPORTS_H
