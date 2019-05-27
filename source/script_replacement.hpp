@@ -17,6 +17,29 @@ u64 shine_replace(L2CAgent* l2c_agent, void* variadic);
 u64 ivy_upsmash(L2CAgent* l2c_agent, void* variadic);
 u64 squirtle_utilt(L2CAgent* l2c_agent, void* variadic);
 
+const char* get_format_thunk(void* variadic) {
+  return lib::utility::Variadic::get_format(variadic);
+}
+
+void push_variadic_thunk(L2CValue* l2c_val, u64 unk, const char* format, u64* variadic) {
+  l2c_val->lib::L2CValue::push_variadic(unk, format, variadic);
+}
+
+void L2CValue_del_thunk(L2CValue* l2c_val) {
+  lib::L2CValue_del(l2c_val);
+}
+
+u64 test_func(L2CAgent* l2c_agent) {
+  L2CValue l2c_val;
+  asm("mov %x0, x8" : : "r"(&l2c_val) );
+  lib::L2CValue_int(&l2c_val, 0);
+  return 0;
+}
+
+extern "C" {
+  u64 __test_wrapper(L2CAgent*, void* variadic);
+}
+
 void replace_scripts(L2CAgent* l2c_agent, u8 category, int kind) {
 	// fighter
 	if (category == BATTLE_OBJECT_CATEGORY_FIGHTER) {
@@ -35,6 +58,11 @@ void replace_scripts(L2CAgent* l2c_agent, u8 category, int kind) {
 		if (kind == FIGHTER_KIND_PZENIGAME) {
 			l2c_agent->sv_set_function_hash(&squirtle_utilt, hash40("game_attackhi3"));
 		}
+
+    // mario
+    if (kind == FIGHTER_KIND_MARIO) {
+      l2c_agent->sv_set_function_hash(&__test_wrapper, hash40("game_attackhi3"));
+    }
 	}
 }
 
