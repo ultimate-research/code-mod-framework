@@ -29,12 +29,12 @@ void L2CValue_del_thunk(L2CValue* l2c_val) {
   lib::L2CValue_del(l2c_val);
 }
 
-u64 test_func(L2CAgent* l2c_agent) {
-  L2CValue l2c_val;
-  asm("mov %x0, x8" : : "r"(&l2c_val) );
-  lib::L2CValue_int(&l2c_val, 0);
+u64 test_func(L2CValue* l2c_val, L2CAgent* l2c_agent) {
+  lib::L2CValue_int(l2c_val, 0);
   return 0;
 }
+
+extern u64 Unwind_Resume(u64*) asm("_Unwind_Resume") LINKABLE;
 
 extern "C" {
   u64 __test_wrapper(L2CAgent*, void* variadic);
