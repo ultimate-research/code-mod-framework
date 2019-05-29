@@ -1,5 +1,5 @@
-#ifndef ACMD_IMPORTS_H
-#define ACMD_IMPORTS_H
+#ifndef APP_SV_ANIMCMD_H
+#define APP_SV_ANIMCMD_H
 
 #include <switch.h>
 
@@ -18,4 +18,4 @@ namespace app::sv_animcmd {
 	extern u64 FT_MOTION_RATE(u64) asm("_ZN3app10sv_animcmd14FT_MOTION_RATEEP9lua_State") LINKABLE;
 }
 
-#endif // ACMD_IMPORTS_H
+#endif // APP_SV_ANIMCMD_H

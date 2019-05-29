@@ -3,10 +3,8 @@
 
 #include <switch.h>
 
-#include "l2c.hpp"
+#include "../../useful.h"
 #include "lua_bind_hash.hpp"
-
-#define LOAD64 *(u64 *)
 
 namespace lib {
 	enum L2CVarType {

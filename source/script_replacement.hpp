@@ -3,9 +3,8 @@
 #include <stdint.h>
 
 #include "crc32.h"
+#include "useful.h"
 
-#include "l2c.hpp"
-#include "l2c_imports.hpp"
 #include "acmd_wrapper.hpp"
 #include "const_value_table.h"
 
@@ -17,6 +16,7 @@ u64 shine_replace(L2CAgent* l2c_agent, void* variadic);
 u64 ivy_upsmash(L2CAgent* l2c_agent, void* variadic);
 u64 squirtle_utilt(L2CAgent* l2c_agent, void* variadic);
 
+// BEGIN WRAPPER TESTING DEPENDENCIES
 const char* get_format_thunk(void* variadic) {
   return lib::utility::Variadic::get_format(variadic);
 }
@@ -39,6 +39,7 @@ extern u64 Unwind_Resume(u64*) asm("_Unwind_Resume") LINKABLE;
 extern "C" {
   u64 __test_wrapper(L2CAgent*, void* variadic);
 }
+// END WRAPPER TESTING DEPENDENCIES
 
 void replace_scripts(L2CAgent* l2c_agent, u8 category, int kind) {
 	// fighter
