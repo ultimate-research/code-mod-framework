@@ -3,7 +3,7 @@
 
 #include <switch.h>
 
-#include "../../useful.h"
+#include "../../useful/useful.h"
 #include "lua_bind_hash.hpp"
 
 namespace lib {

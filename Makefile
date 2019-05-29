@@ -31,7 +31,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	my_plugin
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source source/saltysd
 DATA		:=	data
 INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src

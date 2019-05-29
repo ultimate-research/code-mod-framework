@@ -7,13 +7,13 @@
 #include <sys/reent.h>
 #include <switch/kernel/ipc.h>
 
-#include "useful.h"
+#include "useful/useful.h"
 
-#include "saltysd_core.h"
-#include "saltysd_ipc.h"
-#include "saltysd_dynamic.h"
+#include "saltysd/saltysd_core.h"
+#include "saltysd/saltysd_ipc.h"
+#include "saltysd/saltysd_dynamic.h"
 
-#include "saltysd_helper.hpp"
+#include "saltysd/saltysd_helper.hpp"
 
 #include "script_replacement.hpp"
 

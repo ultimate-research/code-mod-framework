@@ -2,11 +2,11 @@
 
 #include <stdint.h>
 
-#include "crc32.h"
-#include "useful.h"
+#include "useful/crc32.h"
+#include "useful/useful.h"
+#include "useful/const_value_table.h"
 
 #include "acmd_wrapper.hpp"
-#include "const_value_table.h"
 
 using namespace lib;
 using namespace app::sv_animcmd;
