@@ -16,7 +16,7 @@ namespace app::lua_bind {
         u64 end_frame(u64) asm("_ZN3app8lua_bind28MotionModule__end_frame_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
         u64 end_frame_from_hash(u64,u64) asm("_ZN3app8lua_bind38MotionModule__end_frame_from_hash_implEPNS_26BattleObjectModuleAccessorEN3phx6Hash40E") LINKABLE;
         u64 end_frame_partial(u64,int) asm("_ZN3app8lua_bind36MotionModule__end_frame_partial_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-        u64 frame(u64) asm("_ZN3app8lua_bind24MotionModule__frame_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
+        float frame(u64) asm("_ZN3app8lua_bind24MotionModule__frame_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
         u64 frame_2nd(u64) asm("_ZN3app8lua_bind28MotionModule__frame_2nd_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
         u64 frame_partial(u64,int) asm("_ZN3app8lua_bind32MotionModule__frame_partial_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
         u64 get_frame_material(u64,int materialAnimeKind) asm("_ZN3app8lua_bind37MotionModule__get_frame_material_implEPNS_26BattleObjectModuleAccessorENS_17MaterialAnimeKindE") LINKABLE;
