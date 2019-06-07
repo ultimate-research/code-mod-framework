@@ -1,6 +1,8 @@
 #ifndef APP_LUA_BIND_H
 #define APP_LUA_BIND_H
 
+#include "lua_bind/MotionModule.hpp"
+
 namespace app::lua_bind {
 	namespace AttackModule {
 		void clear_all(u64) asm("_ZN3app8lua_bind28AttackModule__clear_all_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
@@ -29,11 +31,6 @@ namespace app::lua_bind {
 
 	namespace HitModule {
 		void set_status_all(u64, int, int) asm("_ZN3app8lua_bind30HitModule__set_status_all_implEPNS_26BattleObjectModuleAccessorENS_9HitStatusEi") LINKABLE;
-	}
-
-	namespace MotionModule {
-		float frame(u64) asm("_ZN3app8lua_bind24MotionModule__frame_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-		u64 motion_kind(u64) asm("_ZN3app8lua_bind30MotionModule__motion_kind_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
 	}
 
 	namespace PostureModule {
