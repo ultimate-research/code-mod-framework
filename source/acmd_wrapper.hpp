@@ -12,6 +12,11 @@
 
 using namespace lib;
 
+bool is_before_frame(u64 lua_state, float f) {
+	u64 acmd_frame_obj = LOAD64(LOAD64(lua_state - 8) + 432LL);
+	return *(float*)((*((u32 *)acmd_frame_obj + 64) + 15) & 0xFFFFFFF0) < f; 
+}
+
 struct ACMD {
 	L2CAgent* l2c_agent;
 	u64 module_accessor;
@@ -28,6 +33,48 @@ struct ACMD {
 		app::sv_animcmd::frame(l2c_agent->lua_state_agent, f);
 		l2c_agent->clear_lua_stack();
 	}
+
+	// attempted reimplementation of sv_animcmd::frame
+	bool _frame(float f) {
+        u64 acmd_obj = LOAD64(LOAD64(l2c_agent->lua_state_agent - 8) + 432);
+        if ( !is_before_frame(l2c_agent->lua_state_agent, f) )
+            return true;
+        
+        *(u8*)(acmd_obj + 47) = 3;
+        LOAD64(acmd_obj + 48) = (u64)&is_before_frame;
+        *(float*)(acmd_obj + 56) = f;
+        
+        u64 acmd_obj_other = LOAD64(acmd_obj);
+        if (*(u8*)(acmd_obj_other + 664)) {
+            void (*some_func)(u64) = (void (*)(u64)) LOAD64(LOAD64(LOAD64(acmd_obj_other + 656)) + 16);
+            some_func(LOAD64(acmd_obj_other + 656));
+            return true;
+        }
+
+        bool doThing = false;
+
+        if ( !*(u16*)(l2c_agent->lua_state_agent + 196)) {
+            u64 v4 = LOAD64(l2c_agent->lua_state_agent + 32);
+            *(u8*)(l2c_agent->lua_state_agent + 12) = 1;
+            LOAD64(v4 + 56) = LOAD64(v4) - LOAD64(l2c_agent->lua_state_agent + 56);
+            if ( *(u8*)(v4 + 66) & 2)
+                return true;
+            doThing = true;
+        }
+
+
+        if ( doThing || LOAD64(LOAD64(l2c_agent->lua_state_agent + 24) + 200) == l2c_agent->lua_state_agent) {
+            // throw 
+            u64 v4 = LOAD64(l2c_agent->lua_state_agent + 32);
+            LOAD64(v4 + 32) = 0;
+            LOAD64(v4) = LOAD64(l2c_agent->lua_state_agent + 16) - 16;
+            
+        }
+
+        return false;
+
+        // throw
+    }
 
 	void wait(float f) {
 		l2c_agent->clear_lua_stack();
