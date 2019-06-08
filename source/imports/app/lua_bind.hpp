@@ -1,26 +1,55 @@
-#ifndef APP_LUA_BIND_H
-#define APP_LUA_BIND_H
+#pragma once
 
 #include "lua_bind/MotionModule.hpp"
+#include "lua_bind/ControlModule.hpp"
+#include "lua_bind/CancelModule.hpp"
+#include "lua_bind/EffectModule.hpp"
+#include "lua_bind/WorkModule.hpp"
+#include "lua_bind/StatusModule.hpp"
+#include "lua_bind/KineticModule.hpp"
+#include "lua_bind/JostleModule.hpp"
+#include "lua_bind/GroundModule.hpp"
+#include "lua_bind/GrabModule.hpp"
+#include "lua_bind/DamageModule.hpp"
+#include "lua_bind/CatchModule.hpp"
+#include "lua_bind/CaptureModule.hpp"
+#include "lua_bind/PostureModule.hpp"
+#include "lua_bind/ArticleModule.hpp"
+#include "lua_bind/ColorBlendModule.hpp"
+#include "lua_bind/SoundModule.hpp"
+#include "lua_bind/StopModule.hpp"
+#include "lua_bind/ShakeModule.hpp"
+#include "lua_bind/ShieldModule.hpp"
+#include "lua_bind/SlopeModule.hpp"
+#include "lua_bind/SlopeModule.hpp"
+#include "lua_bind/ShadowModule.hpp"
+#include "lua_bind/SlowModule.hpp"
+#include "lua_bind/TurnModule.hpp"
+#include "lua_bind/VisibilityModule.hpp"
+#include "lua_bind/TeamModule.hpp"
+#include "lua_bind/SearchModule.hpp"
+#include "lua_bind/ReflectorModule.hpp"
+#include "lua_bind/ReflectModule.hpp"
+#include "lua_bind/PhysicsModule.hpp"
+#include "lua_bind/MotionAnimcmdModule.hpp"
+#include "lua_bind/ModelModule.hpp"
+#include "lua_bind/ItemModule.hpp"
+#include "lua_bind/InkPaintModule.hpp"
+#include "lua_bind/HitModule.hpp"
+#include "lua_bind/ComboModule.hpp"
+#include "lua_bind/CameraModule.hpp"
+#include "lua_bind/AttackModule.hpp"
+#include "lua_bind/AreaModule.hpp"
+#include "lua_bind/AbsorberModule.hpp"
+
+#include "lua_bind/FighterWorkModuleImpl.hpp"
+#include "lua_bind/FighterStopModuleImpl.hpp"
+#include "lua_bind/FighterStatusModuleImpl.hpp"
+#include "lua_bind/FighterMotionModuleImpl.hpp"
+#include "lua_bind/FighterControlModuleImpl.hpp"
+#include "lua_bind/FighterAreaModuleImpl.hpp"
 
 namespace app::lua_bind {
-	namespace AttackModule {
-		void clear_all(u64) asm("_ZN3app8lua_bind28AttackModule__clear_all_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-	}
-
-	namespace ControlModule {
-		bool check_button_on(u64, int) asm("_ZN3app8lua_bind35ControlModule__check_button_on_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-	}  
-
-	namespace EffectModule {
-		// boma, effect, joint, pos, rot, size, random_pos, random_rot, NO_SCALE?, attr?, unkint1, unkint2
-		uint req_on_joint(u64, u64, u64, const Vector3f*, const Vector3f*, float a6, const Vector3f*, const Vector3f*, bool, uint, int, int) 
-			asm("_ZN3app8lua_bind31EffectModule__req_on_joint_implEPNS_26BattleObjectModuleAccessorEN3phx6Hash40ES4_RKNS3_8Vector3fES7_fS7_S7_bjii") LINKABLE;
-
-		void kill_kind(u64, u64, bool, bool) 
-			asm("_ZN3app8lua_bind28EffectModule__kill_kind_implEPNS_26BattleObjectModuleAccessorEN3phx6Hash40Ebb") LINKABLE;
-	}
-
 	namespace FighterManager {
 		u64 get_fighter_information(u64, int) asm("_ZN3app8lua_bind44FighterManager__get_fighter_information_implEPNS_14FighterManagerENS_14FighterEntryIDE") LINKABLE;
 	}
@@ -28,31 +57,4 @@ namespace app::lua_bind {
 	namespace FighterInformation {
 		bool is_operation_cpu(u64) asm("_ZN3app8lua_bind41FighterInformation__is_operation_cpu_implEPNS_18FighterInformationE") LINKABLE;
 	}
-
-	namespace HitModule {
-		void set_status_all(u64, int, int) asm("_ZN3app8lua_bind30HitModule__set_status_all_implEPNS_26BattleObjectModuleAccessorENS_9HitStatusEi") LINKABLE;
-	}
-
-	namespace PostureModule {
-		float lr(u64) asm("_ZN3app8lua_bind22PostureModule__lr_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-		float pos_x(u64) asm("_ZN3app8lua_bind25PostureModule__pos_x_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-		float pos_y(u64) asm("_ZN3app8lua_bind25PostureModule__pos_y_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-		float set_pos(u64, const Vector3f*) asm("_ZN3app8lua_bind27PostureModule__set_pos_implEPNS_26BattleObjectModuleAccessorERKN3phx8Vector3fE") LINKABLE;
-	}
-
-	namespace StatusModule {
-		u64 change_status_request_from_script(u64, int, bool) asm("_ZN3app8lua_bind52StatusModule__change_status_request_from_script_implEPNS_26BattleObjectModuleAccessorEib") LINKABLE;
-		int status_kind(u64) asm("_ZN3app8lua_bind30StatusModule__status_kind_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-		int situation_kind(u64) asm("_ZN3app8lua_bind33StatusModule__situation_kind_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-	}
-
-	namespace WorkModule {
-		uint get_int(u64, int) asm("_ZN3app8lua_bind24WorkModule__get_int_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-		void inc_int(u64, int) asm("_ZN3app8lua_bind24WorkModule__inc_int_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-		uint get_param_int(u64, u64, u64) asm("_ZN3app8lua_bind30WorkModule__get_param_int_implEPNS_26BattleObjectModuleAccessorEmm") LINKABLE;
-		void on_flag(u64, int) asm("_ZN3app8lua_bind24WorkModule__on_flag_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-		void off_flag(u64, int) asm("_ZN3app8lua_bind25WorkModule__off_flag_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-	}
 }
-
-#endif // APP_LUA_BIND_H
