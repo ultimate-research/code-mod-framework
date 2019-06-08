@@ -17,10 +17,22 @@ typedef struct Hash40 {
 	uint64_t hash : 40;
 } Hash40;
 
+typedef struct Vector2f {
+	float x;
+	float y;
+} Vector2f;
+
 typedef struct Vector3f {
 	float x;
 	float y;
 	float z;
 } Vector3f;
+
+typedef struct Vector4f {
+	float x;
+	float y;
+	float z;
+	float w;
+}Vector4f;
 	
 #endif // USEFUL_H
