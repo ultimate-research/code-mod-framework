@@ -12,6 +12,15 @@
 
 using namespace lib;
 
+u64 load_module(u64 module_accessor, u64 module_offset) {
+    return LOAD64(module_accessor + module_offset);
+}
+
+void* load_module_impl(u64 module, u64 function_offset) {
+    u64 function_impl = LOAD64(module) + function_offset;
+    return (void*)LOAD64(function_impl);
+}
+
 bool is_before_frame(u64 lua_state, float f) {
 	u64 acmd_frame_obj = LOAD64(LOAD64(lua_state - 8) + 432LL);
 	return *(float*)((*((u32 *)acmd_frame_obj + 64) + 15) & 0xFFFFFFF0) < f; 
