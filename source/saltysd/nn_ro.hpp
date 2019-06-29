@@ -67,16 +67,20 @@ typedef struct Module_t {
 	enum module_state state;
 	uintptr_t module_address;
 	uintptr_t bss_address;
-} Module;
+} Module_t;
 
-typedef struct SmashModule { /* PlaceHolder Structure */
-	Module module;
-	void *field_0x20;
-	void *src_buffer;
-	char name[256]; /* Created by retype action */
-	undefined field_0x130;
-	undefined field_0x131;
-	undefined4 is_loaded; // bool
-} SmashModule;
+namespace nn::ro {
+    typedef struct Module { /* PlaceHolder Structure */
+        Module_t module;
+        void *field_0x20;
+        void *src_buffer;
+        char name[256]; /* Created by retype action */
+        undefined field_0x130;
+        undefined field_0x131;
+        undefined4 is_loaded; // bool
+    } Module;
+
+    extern int LoadModule(nn::ro::Module *, void const*, void *, unsigned long, int) LINKABLE;
+}
 
 # endif // NN_RO_H

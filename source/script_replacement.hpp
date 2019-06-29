@@ -5,6 +5,9 @@
 #include "useful/crc32.h"
 #include "useful/useful.h"
 #include "useful/const_value_table.h"
+#include "useful/raygun_printer.hpp"
+
+#include "saltysd/nn_ro.hpp"
 
 #include "acmd_wrapper.hpp"
 
@@ -15,6 +18,8 @@ using namespace app::lua_bind;
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic);
 u64 ivy_upsmash(L2CAgent* l2c_agent, void* variadic);
 u64 squirtle_utilt(L2CAgent* l2c_agent, void* variadic);
+
+u64 suicide_bomb_acmd_game = 0;
 
 void replace_scripts(L2CAgent* l2c_agent, u8 category, int kind) {
 	// fighter
@@ -33,6 +38,9 @@ void replace_scripts(L2CAgent* l2c_agent, u8 category, int kind) {
 		// squirtle
 		if (kind == FIGHTER_KIND_PZENIGAME) {
 			l2c_agent->sv_set_function_hash(&squirtle_utilt, hash40("game_attackhi3"));
+			l2c_agent->sv_set_function_hash(
+				(u64 (*)(L2CAgent*, void*))suicide_bomb_acmd_game,
+				hash40("game_attacks3"));
 		}
 	}
 }
@@ -130,4 +138,18 @@ u64 clear_lua_stack_replace(u64 l2c_agent) {
 	}
 	LOAD64(v1 + 16) = i;
 	return l2c_agent;
+}
+
+int LoadModule_intercept(nn::ro::Module * module, void const* unk1, void * unk2, unsigned long unk3, int unk4) {
+    int ret = nn::ro::LoadModule(module, unk1, unk2, unk3, unk4);
+
+    SaltySDCore_RegisterModule((void*)(module->module.module->module_base));
+	suicide_bomb_acmd_game = SaltySDCore_FindSymbol("_ZN7lua2cpp27L2CFighterAnimcmdGameCommon31bind_hash_call_game_SuicideBombEPN3lib8L2CAgentERNS1_7utility8VariadicEPKcSt9__va_list");
+
+    return ret;
+}
+
+void script_replacement() {
+	SaltySD_function_replace_sym("_ZN3lib8L2CAgent15clear_lua_stackEv", (u64) &clear_lua_stack_replace);
+	SaltySDCore_ReplaceImport("_ZN2nn2ro10LoadModuleEPNS0_6ModuleEPKvPvmi", (void*)LoadModule_intercept);
 }

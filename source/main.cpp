@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Necessary for script replacement
-	SaltySD_function_replace_sym("_ZN3lib8L2CAgent15clear_lua_stackEv", (u64) &clear_lua_stack_replace);
+	script_replacement();
 	
 	// Add function replacements here
 
