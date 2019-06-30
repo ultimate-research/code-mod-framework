@@ -15,9 +15,12 @@ using namespace lib;
 using namespace app::sv_animcmd;
 using namespace app::lua_bind;
 
+void sv_replace_status_func(u64 l2c_agentbase, int status_kind, u64 key, void* func);
+
 u64 shine_replace(L2CAgent* l2c_agent, void* variadic);
 u64 ivy_upsmash(L2CAgent* l2c_agent, void* variadic);
 u64 squirtle_utilt(L2CAgent* l2c_agent, void* variadic);
+u64 end_shieldbreakfly_replace(u64 l2c_fighter, u64 l2c_agent);
 
 u64 suicide_bomb_acmd_game = 0;
 
@@ -42,7 +45,37 @@ void replace_scripts(L2CAgent* l2c_agent, u8 category, int kind) {
 				(u64 (*)(L2CAgent*, void*))suicide_bomb_acmd_game,
 				hash40("game_attacks3"));
 		}
+
+		// peach
+		if (kind == FIGHTER_KIND_PEACH) {
+			sv_replace_status_func((u64)l2c_agent, 
+				FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY, 
+				LUA_SCRIPT_STATUS_FUNC_STATUS_END, 
+				(void*)&end_shieldbreakfly_replace);
+		}
 	}
+}
+
+// with l2cvalue* in x8
+u64 end_shieldbreakfly_replace(u64 l2c_fighter, u64 l2c_agent) {
+    L2CValue* l2c_ret;
+    asm("mov %x0, x8" : : "r"(l2c_ret) : "x8" );
+
+    u64 lua_state = LOAD64(l2c_fighter + 8);
+    u64 module_accessor = LOAD64(LOAD64(lua_state - 8) + 416LL);
+	void (*is_enable_passive)(u64) = (void (*)(u64)) SaltySDCore_FindSymbol("_ZN7lua2cpp16L2CFighterCommon17is_enable_passiveEv");
+	L2CValue passive_enabled;
+	asm("mov x8, %x0" : : "r"(&passive_enabled) );
+	is_enable_passive(l2c_fighter);
+
+	if (passive_enabled.raw)
+		print_string(module_accessor, "true");
+	else
+		print_string(module_accessor, "false");
+
+	l2c_ret->type = L2C_integer;
+	l2c_ret->raw = 0;
+    return 0;
 }
 
 // AnimCMD replacement functions
@@ -151,5 +184,5 @@ int LoadModule_intercept(nn::ro::Module * module, void const* unk1, void * unk2,
 
 void script_replacement() {
 	SaltySD_function_replace_sym("_ZN3lib8L2CAgent15clear_lua_stackEv", (u64) &clear_lua_stack_replace);
-	SaltySDCore_ReplaceImport("_ZN2nn2ro10LoadModuleEPNS0_6ModuleEPKvPvmi", (void*)LoadModule_intercept);
+	//SaltySDCore_ReplaceImport("_ZN2nn2ro10LoadModuleEPNS0_6ModuleEPKvPvmi", (void*)LoadModule_intercept);
 }
