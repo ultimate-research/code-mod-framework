@@ -1,6 +1,6 @@
 # Ultimate Code Mod Framework
 
-A C project template for those starting off with function replacement through SaltyNX.
+A C project framework/template for those starting off with function replacement through SaltyNX.
 
 ## What it provides:
 
@@ -9,4 +9,4 @@ A C project template for those starting off with function replacement through Sa
 * A project set up for devkitpro targetting SaltyNX's plugin setup
 * A set of lua2cpp and ACMD imports for calling back to the base game's functions
 
-Please read [the wiki](https://github.com/ultimate-research/code-mod-wiki) for guides and more information on getting started.
+Please read [the wiki](https://github.com/ultimate-research/code-mod-framework/wiki) for guides and more information on getting started.
