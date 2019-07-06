@@ -1,15 +1,15 @@
-#include <switch.h>
+#include <switch_min.h>
 
 #include <stdint.h>
 
 #include "useful/const_value_table.h"
 #include "useful/crc32.h"
-#include "useful/raygun_printer.hpp"
+#include "useful/raygun_printer.h"
 #include "useful/useful.h"
 
-#include "saltysd/nn_ro.hpp"
+#include "saltysd/nn_ro.h"
 
-#include "acmd_wrapper.hpp"
+#include "acmd_wrapper.h"
 
 using namespace lib;
 using namespace app::sv_animcmd;
