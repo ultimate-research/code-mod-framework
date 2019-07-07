@@ -1,11 +1,11 @@
-#include <switch.h>
+#include <switch_min.h>
 
 #include <string.h>
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/iosupport.h>
 #include <sys/reent.h>
-#include <switch/kernel/ipc.h>
+#include <switch_min/kernel/ipc.h>
 
 #include "useful/useful.h"
 
@@ -13,7 +13,7 @@
 #include "saltysd/saltysd_ipc.h"
 #include "saltysd/saltysd_dynamic.h"
 
-#include "saltysd/saltysd_helper.hpp"
+#include "saltysd/saltysd_helper.h"
 
 #include "script_replacement.hpp"
 

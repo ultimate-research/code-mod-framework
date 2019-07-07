@@ -1,9 +1,10 @@
-#include <switch.h>
+#include <switch_min.h>
 
-#include "saltysd_core.h"
-#include "saltysd_ipc.h"
-#include "saltysd_dynamic.h"
+#include "saltysd/saltysd_core.h"
+#include "saltysd/saltysd_ipc.h"
+#include "saltysd/saltysd_dynamic.h"
 
+u64 ANCHOR_ABS;
 int SaltySD_function_replace(u64 addr, u64 new_func) {
 	if (addr) {
 		SaltySD_Memcpy(addr, (u64) "\x49\x00\x00\x58", 4); // LDR X9, .+8
