@@ -99,6 +99,7 @@ namespace lib {
 
 		u64 sv_set_function_hash(u64 (*func)(L2CAgent*, void*), u64 hash) asm("_ZN3lib8L2CAgent20sv_set_function_hashEPvN3phx6Hash40E") LINKABLE;
 		u64 clear_lua_stack() asm("_ZN3lib8L2CAgent15clear_lua_stackEv") LINKABLE;
+		u64 _clear_lua_stack();
 	};
 	namespace utility {
 		namespace Variadic {

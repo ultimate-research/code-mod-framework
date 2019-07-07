@@ -162,26 +162,17 @@ void sv_replace_status_func(u64 l2c_agentbase, int status_kind, u64 key,
     }
 }
 
-u64 clear_lua_stack_replace(u64 l2c_agent) {
-    u64 lua_state = LOAD64(l2c_agent + 8);
-    if ((lua_state - 8) && LOAD64(lua_state - 8) &&
+u64 clear_lua_stack_replace(L2CAgent* l2c_agent) {
+    u64 lua_state = l2c_agent->lua_state_agent;
+    if ((lua_state - 8) && 
+        LOAD64(lua_state - 8) &&
         (LOAD64(LOAD64(lua_state - 8) + 416LL))) {
         u8 battle_object_category = *(u8*)(LOAD64(lua_state - 8) + 404LL);
         int battle_object_kind = *(int*)(LOAD64(lua_state - 8) + 408LL);
-        replace_scripts((L2CAgent*)l2c_agent, battle_object_category,
-                        battle_object_kind);
+        replace_scripts(l2c_agent, battle_object_category, battle_object_kind);
     }
 
-    // Original clear_lua_stack:
-    u64 v1 = LOAD64(l2c_agent + 8);
-    u64 v2 = LOAD64(v1 + 16);
-    u64 i = LOAD64(LOAD64(v1 + 32)) + 16LL;
-    for (; v2 < i; v2 = LOAD64(v1 + 16)) {
-        LOAD64(v1 + 16) = v2 + 16;
-        *(u32*)(v2 + 8) = 0;
-    }
-    LOAD64(v1 + 16) = i;
-    return l2c_agent;
+    return l2c_agent->_clear_lua_stack();
 }
 
 int LoadModule_intercept(nn::ro::Module* module, void const* unk1, void* unk2,
