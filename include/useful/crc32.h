@@ -54,7 +54,7 @@ const uint32_t crc32_tab[] = {
 	0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
-uint32_t crc32_part(const void *buf, size_t size, uint32_t crc) {
+inline uint32_t crc32_part(const void *buf, size_t size, uint32_t crc) {
 	const uint8_t* p = (const uint8_t*)buf;
 	crc = crc ^ ~0U;
 	while (size--)
@@ -62,7 +62,7 @@ uint32_t crc32_part(const void *buf, size_t size, uint32_t crc) {
 	return crc ^ ~0U;
 }
 
-uint32_t crc32(const void *buf, size_t size) {
+inline uint32_t crc32(const void *buf, size_t size) {
 	const uint8_t* p = (const uint8_t*)buf;
 	uint32_t crc;
 	crc = ~0U;
@@ -71,7 +71,7 @@ uint32_t crc32(const void *buf, size_t size) {
 	return crc ^ ~0U;
 }
 
-uint64_t hash40(const char* data) {
+inline uint64_t hash40(const char* data) {
 	size_t len = strlen(data); 
 	return crc32(data, len) | (len & 0xFF) << 32;
 }

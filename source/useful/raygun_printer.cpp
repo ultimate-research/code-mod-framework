@@ -6,6 +6,7 @@
 #include <stdarg.h>
 
 #include "useful/useful.h"
+#include "useful/crc32.h"
 #include "acmd_wrapper.h"
 
 #define RAYGUN_LENGTH 8
@@ -104,17 +105,14 @@ const char segment_rev[15] = {
     'n',
 };
 
-void show_segment(u64 battle_object_module_accessor, float z, float y, float x, float zrot, float size) {
-    Hash40 raygunShot = { .hash = 0x11e470b07fLL };
-    Hash40 top = { .hash = 0x031ed91fcaLL };
+void show_segment(u64 module_accessor, float z, float y, float x, float zrot, float size) {
+    Vector3f pos = {.x = x, .y = y, .z = z};
+    Vector3f rot = {.x = 0, .y = 90, .z = zrot};
+    Vector3f random = {.x = 0, .y = 0, .z = 0};
 
-    Vector3f pos = { .x = x, .y = y, .z = z };
-    Vector3f rot = { .x = 0, .y = 90, .z = zrot };
-    Vector3f random = { .x = 0, .y = 0, .z = 0 };
-
-    app::lua_bind::EffectModule::req_on_joint(battle_object_module_accessor, raygunShot.hash, top.hash, 
-        &pos, &rot, size, 
-        &random, &random, 
+    app::lua_bind::EffectModule::req_on_joint(module_accessor, 
+        hash40("sys_raygun_bullet"), hash40("top"), 
+        &pos, &rot, size, &random, &random, 
         0, 0, 0, 0);
 }
 
@@ -137,8 +135,7 @@ int alphabet_index(char to_print) {
 
 void print_char( u64 module_accessor, char to_print, int line_num, float horiz_offset, float facing_left) {
     int alph_index = alphabet_index(to_print);
-    if (alph_index < 0 || alph_index >= 40)
-        return;
+    if (alph_index < 0 || alph_index >= 40) return;
     const char* segment_str = alphabet[alph_index];
     int num_segments = strlen(segment_str);
 
@@ -150,18 +147,26 @@ void print_char( u64 module_accessor, char to_print, int line_num, float horiz_o
 
         if (facing_left == -1) {
             index = segment_rev[index] - 'a';
-		}
+        }
         segment = segment_dict[index];
+
+        const float size_mult = 0.5;
 
         float z = segment[0];
         float y = segment[1] + lineOffset;
         float x = segment[2] + horiz_offset;
         float zrot = segment[3];
 
-        if (facing_left == -1)
-            zrot *= -1;
+        if (facing_left == -1) zrot *= -1;
 
         float size = segment[4];
+
+        x *= size_mult;
+        x += facing_left * 5;
+        y *= size_mult;
+        y += 5;
+        z *= size_mult;
+        size *= size_mult;
         show_segment(module_accessor, z, y, x, zrot, size);
     }
 }
@@ -176,8 +181,7 @@ void print_string( u64 module_accessor, const char* format, ...) {
     va_end(args);
 
     // Delete any previous strings
-    Hash40 raygunShot = { .hash = 0x11e470b07fLL };
-    app::lua_bind::EffectModule::kill_kind(module_accessor, raygunShot.hash, 0, 1);
+    app::lua_bind::EffectModule::kill_kind(module_accessor, hash40("sys_raygun_bullet"), 0, 1);
 
     int line_num = 0;
     float horiz_offset = 0;
