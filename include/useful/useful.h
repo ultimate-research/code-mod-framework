@@ -13,10 +13,6 @@
 	{char log_buf[0x200]; snprintf(log_buf, 0x200, __VA_ARGS__); \
 	svcOutputDebugString(log_buf, strlen(log_buf));}
 
-typedef struct Hash40 {
-	uint64_t hash : 40;
-} Hash40;
-
 typedef struct Vector2f {
 	float x;
 	float y;

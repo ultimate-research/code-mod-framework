@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "useful.h"
 
 const uint32_t crc32_tab[] = {
 	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
@@ -71,9 +72,17 @@ inline uint32_t crc32(const void *buf, size_t size) {
 	return crc ^ ~0U;
 }
 
+typedef struct Hash40 {
+	Hash40(const char* data) {
+		size_t len = strlen(data); 
+		hash = crc32(data, len) | (len & 0xFF) << 32;
+	}
+	operator uint64_t() { return hash; }
+	uint64_t hash;
+} Hash40;
+
 inline uint64_t hash40(const char* data) {
-	size_t len = strlen(data); 
-	return crc32(data, len) | (len & 0xFF) << 32;
+	return Hash40(data);
 }
 
 #endif // CRC32_H
