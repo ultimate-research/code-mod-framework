@@ -5,6 +5,7 @@
 
 #include "app/sv_animcmd.h"
 #include "app/sv_system.h"
+#include "app/sv_math.h"
 #include "app/lua_bind.h"
 #include "lib/l2c_imports.h"
 

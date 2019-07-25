@@ -12,6 +12,9 @@ namespace app::sv_animcmd {
 	extern u64 CATCH(u64) asm("_ZN3app10sv_animcmd5CATCHEP9lua_State") LINKABLE;
 	extern u64 ATTACK(u64) asm("_ZN3app10sv_animcmd6ATTACKEP9lua_State") LINKABLE;
 	extern u64 EFFECT(u64) asm("_ZN3app10sv_animcmd6EFFECTEP9lua_State") LINKABLE;
+	extern u64 EFFECT_FOLLOW_NO_SCALE(u64) asm("_ZN3app10sv_animcmd22EFFECT_FOLLOW_NO_SCALEEP9lua_State") LINKABLE;
+	extern u64 LAST_EFFECT_SET_COLOR(u64) asm("_ZN3app10sv_animcmd21LAST_EFFECT_SET_COLOREP9lua_State") LINKABLE;
+	extern u64 LAST_EFFECT_SET_RATE(u64) asm("_ZN3app10sv_animcmd20LAST_EFFECT_SET_RATEEP9lua_State") LINKABLE;
 	extern u64 SEARCH(u64) asm("_ZN3app10sv_animcmd6SEARCHEP9lua_State") LINKABLE;
 	extern u64 HIT_NODE(u64) asm("_ZN3app10sv_animcmd8HIT_NODEEP9lua_State") LINKABLE;
 	extern u64 ATK_POWER(u64) asm("_ZN3app10sv_animcmd9ATK_POWEREP9lua_State") LINKABLE;
