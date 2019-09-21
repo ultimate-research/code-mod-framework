@@ -4,6 +4,12 @@
 namespace app::lua_bind {
 
     namespace KineticModule {
+        //=======================================================//
+        // in most cases, assume an int arg is KINETIC_ENERGY_ID //
+        // "outside" = KINETIC_OUTSIDE_ENERGY_TYPE               //
+        // "attr" or "sum" uses KINETIC_ENERGY_RESERVE_ATTRIBUTE //
+        // Think of KINETIC_TYPE as a "mode"                     //
+        //=======================================================//
         u64 add_speed(u64,const Vector3f*) asm("_ZN3app8lua_bind29KineticModule__add_speed_implEPNS_26BattleObjectModuleAccessorERKN3phx8Vector3fE") LINKABLE;
         u64 add_speed_outside(u64,int,const Vector3f*) asm("_ZN3app8lua_bind37KineticModule__add_speed_outside_implEPNS_26BattleObjectModuleAccessorEiRKN3phx8Vector3fE") LINKABLE;
         u64 change_kinetic(u64,int) asm("_ZN3app8lua_bind34KineticModule__change_kinetic_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
@@ -13,10 +19,10 @@ namespace app::lua_bind {
         u64 enable_energy(u64,int) asm("_ZN3app8lua_bind33KineticModule__enable_energy_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
         u64 get_energy(u64,int) asm("_ZN3app8lua_bind30KineticModule__get_energy_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
         u64 get_kinetic_type(u64) asm("_ZN3app8lua_bind36KineticModule__get_kinetic_type_implEPNS_26BattleObjectModuleAccessorE") LINKABLE;
-        u64 get_sum_rotation(u64,int) asm("_ZN3app8lua_bind36KineticModule__get_sum_rotation_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-        u64 get_sum_speed(u64,int) asm("_ZN3app8lua_bind33KineticModule__get_sum_speed_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-        u64 get_sum_speed3f(u64,int) asm("_ZN3app8lua_bind35KineticModule__get_sum_speed3f_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
-        u64 get_sum_speed_length(u64,int) asm("_ZN3app8lua_bind40KineticModule__get_sum_speed_length_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
+        float get_sum_rotation(u64,int) asm("_ZN3app8lua_bind36KineticModule__get_sum_rotation_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
+        float get_sum_speed(u64,int) asm("_ZN3app8lua_bind33KineticModule__get_sum_speed_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
+        float get_sum_speed3f(u64,int) asm("_ZN3app8lua_bind35KineticModule__get_sum_speed3f_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
+        float get_sum_speed_length(u64,int) asm("_ZN3app8lua_bind40KineticModule__get_sum_speed_length_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
         float get_sum_speed_x(u64,int) asm("_ZN3app8lua_bind35KineticModule__get_sum_speed_x_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
         float get_sum_speed_y(u64,int) asm("_ZN3app8lua_bind35KineticModule__get_sum_speed_y_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;
         bool is_enable_energy(u64,int) asm("_ZN3app8lua_bind36KineticModule__is_enable_energy_implEPNS_26BattleObjectModuleAccessorEi") LINKABLE;

@@ -51,11 +51,11 @@
 #include "lua_bind/FighterAreaModuleImpl.h"
 
 namespace app::lua_bind {
-	namespace FighterManager {
-		u64 get_fighter_information(u64, int) asm("_ZN3app8lua_bind44FighterManager__get_fighter_information_implEPNS_14FighterManagerENS_14FighterEntryIDE") LINKABLE;
-	}
+    namespace FighterManager {
+        u64 get_fighter_information(u64, int) asm("_ZN3app8lua_bind44FighterManager__get_fighter_information_implEPNS_14FighterManagerENS_14FighterEntryIDE") LINKABLE;
+    }
 
-	namespace FighterInformation {
-		bool is_operation_cpu(u64) asm("_ZN3app8lua_bind41FighterInformation__is_operation_cpu_implEPNS_18FighterInformationE") LINKABLE;
-	}
+    namespace FighterInformation {
+        bool is_operation_cpu(u64) asm("_ZN3app8lua_bind41FighterInformation__is_operation_cpu_implEPNS_18FighterInformationE") LINKABLE;
+    }
 }

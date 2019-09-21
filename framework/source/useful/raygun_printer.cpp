@@ -191,7 +191,7 @@ void print_string( u64 module_accessor, const char* format, ...) {
 
     if (strlen(buffer) <= 8 && strchr(buffer, '\n') == NULL) {
         line_num = 1;
-	}
+    }
     horiz_offset = 0;
     char_num = 0;
     for (size_t i = 0; i < strlen(buffer); i++) {
@@ -211,7 +211,7 @@ void print_string( u64 module_accessor, const char* format, ...) {
             horiz_offset += facing_left * (RAYGUN_LENGTH/2 + 3);
         } else {
             horiz_offset += facing_left * (RAYGUN_LENGTH + 3);
-		}
+        }
 
         if (char_num > 8) {
             horiz_offset = 0;
