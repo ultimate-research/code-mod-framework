@@ -19,7 +19,7 @@ struct ACMD {
 	lib::L2CAgent* l2c_agent;
 	u64 module_accessor;
 	float f;
-	float success_frame;
+	float last_frame;
 	const char* motion_kind;
 	const char* acmd_name;
 	const char* category;
