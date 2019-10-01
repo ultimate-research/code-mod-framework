@@ -66,6 +66,7 @@ void ACMD::run(L2CAgent* agent) {
 	this->module_accessor = app::sv_system::battle_object_module_accessor(l2c_agent->lua_state_agent);
 	u64 motion_kind_hash = app::lua_bind::MotionModule::motion_kind(module_accessor);
 	if (match() && motion_kind_hash == hash40(motion_kind)) {
+		this->f = 1.0;
 		this->acmd_function(this);
 	}
 }
