@@ -5,6 +5,7 @@
 #include "app/lua_bind.h"
 #include "lib/l2c_imports.h"
 #include "acmd_wrapper.h"
+#include "useful/crc32.h"
 
 #include <initializer_list>
 
@@ -22,21 +23,72 @@ bool is_before_frame(u64 lua_state, float f) {
     return *(float*)((*((u32 *)acmd_frame_obj + 64) + 15) & 0xFFFFFFF0) < f; 
 }
 
+namespace app {
+    namespace utility {
+        extern u64 get_kind(u64) asm("_ZN3app7utility8get_kindEPKNS_26BattleObjectModuleAccessorE") LINKABLE;
+    }
+}
+
 //========================================//
 //============ ACMD Funcs ================//
 //========================================//
-ACMD::ACMD(lib::L2CAgent* agent) {
-    l2c_agent = agent;
-    module_accessor = app::sv_system::battle_object_module_accessor(l2c_agent->lua_state_agent);
+ACMD::ACMD() {}
+
+ACMD::ACMD(const char* category, const char* kind, const char* motion_kind, const char* acmd_name, void (*acmd_func)(ACMD*)) {
+	this->category = category;
+	this->kind = kind;
+	this->motion_kind = motion_kind;
+	this->acmd_name = acmd_name;
+	this->acmd_function = acmd_func;
+	this->f = 0;
 }
+
+u64 null_acmd_func(L2CAgent* l2c_agent, void* variadic) {
+    return 0;
+}
+
+bool ACMD::match() {
+	u8 battle_object_category = (u8)(*(u32*)(module_accessor + 8) >> 28);
+	int battle_object_kind = app::utility::get_kind(module_accessor);
+	return battle_object_category == lua_const(category) && battle_object_kind == lua_const(kind);
+}
+
+void ACMD::nullify_original(L2CAgent* agent) {
+	this->l2c_agent = agent;
+	this->module_accessor = app::sv_system::battle_object_module_accessor(l2c_agent->lua_state_agent);
+	if (match())
+		this->l2c_agent->sv_set_function_hash(&null_acmd_func, hash40(acmd_name));
+}
+
+void ACMD::run(L2CAgent* agent) {
+	this->l2c_agent = agent;
+	this->module_accessor = app::sv_system::battle_object_module_accessor(l2c_agent->lua_state_agent);
+	u64 motion_kind_hash = app::lua_bind::MotionModule::motion_kind(module_accessor);
+	if (match() && motion_kind_hash == hash40(motion_kind)) {
+		this->acmd_function(this);
+	}
+}
+
 void ACMD::frame(float f) {
-    l2c_agent->clear_lua_stack();
-    lib::L2CValue frame_val(f);
-    l2c_agent->push_lua_stack(&frame_val);
-    app::sv_animcmd::frame(l2c_agent->lua_state_agent, f);
-    l2c_agent->clear_lua_stack();
+	this->f = f;
 }
-bool ACMD::_frame(float f) {
+
+void ACMD::wait(float f) {
+	this->f += f;
+}
+
+bool ACMD::is_excute() {
+	return app::lua_bind::MotionModule::frame(module_accessor) >= (f - 1);
+}
+
+void ACMD::_frame(float f) {
+	l2c_agent->clear_lua_stack();
+	lib::L2CValue frame_val(f);
+	l2c_agent->push_lua_stack(&frame_val);
+	app::sv_animcmd::frame(l2c_agent->lua_state_agent, f);
+	l2c_agent->clear_lua_stack();
+}
+bool ACMD::_frame_reimpl(float f) {
     u64 acmd_obj = LOAD64(LOAD64(l2c_agent->lua_state_agent - 8) + 432);
     if ( !is_before_frame(l2c_agent->lua_state_agent, f) )
         return true;
@@ -71,21 +123,21 @@ bool ACMD::_frame(float f) {
     // throw
 }
 
-void ACMD::wait(float f) {
-    l2c_agent->clear_lua_stack();
-    lib::L2CValue frame_val(f);
-    l2c_agent->push_lua_stack(&frame_val);
-    app::sv_animcmd::wait(l2c_agent->lua_state_agent, f);
-    l2c_agent->clear_lua_stack();
+void ACMD::_wait(float f) {
+	l2c_agent->clear_lua_stack();
+	lib::L2CValue frame_val(f);
+	l2c_agent->push_lua_stack(&frame_val);
+	app::sv_animcmd::wait(l2c_agent->lua_state_agent, f);
+	l2c_agent->clear_lua_stack();
 }
-bool ACMD::is_excute() {
-    l2c_agent->clear_lua_stack();
-    app::sv_animcmd::is_excute(l2c_agent->lua_state_agent);
-    lib::L2CValue is_excute;
-    l2c_agent->get_lua_stack(1, &is_excute);
-    bool excute = (bool)(is_excute);
-    l2c_agent->clear_lua_stack();
-    return excute;
+bool ACMD::_is_excute() {
+	l2c_agent->clear_lua_stack();
+	app::sv_animcmd::is_excute(l2c_agent->lua_state_agent);
+	lib::L2CValue is_excute;
+	l2c_agent->get_lua_stack(1, &is_excute);
+	bool excute = (bool)(is_excute);
+	l2c_agent->clear_lua_stack();
+	return excute;
 }
 void ACMD::wrap(u64 (*acmd_func)(u64), std::initializer_list<lib::L2CValue> list) {
     l2c_agent->clear_lua_stack(); 
