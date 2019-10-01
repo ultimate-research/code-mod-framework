@@ -40,7 +40,8 @@ ACMD::ACMD(const char* category, const char* kind, const char* motion_kind, cons
 	this->motion_kind = motion_kind;
 	this->acmd_name = acmd_name;
 	this->acmd_function = acmd_func;
-	this->f = 0;
+	this->f = 1.0;
+	this->success_frame = 0;
 }
 
 u64 null_acmd_func(L2CAgent* l2c_agent, void* variadic) {
@@ -78,7 +79,11 @@ void ACMD::wait(float f) {
 }
 
 bool ACMD::is_excute() {
-	return app::lua_bind::MotionModule::frame(module_accessor) >= (f - 1);
+    float current_frame = app::lua_bind::MotionModule::frame(module_accessor) + 1;
+    if (current_frame == 1.0) success_frame = 0; // if the animation starts again
+    bool excute = (current_frame >= f) && (success_frame < f); // if it's after the current frame and we haven't done it before
+    if (excute) success_frame = f;
+    return excute;
 }
 
 void ACMD::_frame(float f) {
