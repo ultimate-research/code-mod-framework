@@ -8,3 +8,4 @@ extern u64 ANCHOR_ABS;
 
 int SaltySD_function_replace(u64 addr, u64 new_func);
 int SaltySD_function_replace_sym(char* function_sym, u64 new_func);
+int SaltySD_function_replace_sym_check_prev(char* function_sym, u64 new_func, u64& prev_func);
