@@ -7,6 +7,8 @@
 #include "app/sv_animcmd.h"
 #include "app/sv_math.h"
 #include "app/sv_system.h"
+#include "app/sv_module_access.h"
+#include "app/FL_sv_module_access.h"
 #include "lib/l2c_imports.h"
 
 #include <initializer_list>
