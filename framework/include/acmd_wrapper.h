@@ -10,6 +10,7 @@
 #include "app/sv_module_access.h"
 #include "app/FL_sv_module_access.h"
 #include "app/sv_battle_object.h"
+#include "app/sv_kinetic_energy.h"
 #include "lib/l2c_imports.h"
 
 #include <initializer_list>
@@ -47,7 +48,7 @@ struct ACMD {
     void wait(float f);
     bool is_excute();
 
-    void wrap(u64 (*acmd_func)(u64), std::initializer_list<lib::L2CValue> list);
+    void wrap(void (*acmd_func)(u64), std::initializer_list<lib::L2CValue> list);
     void ATTACK(
         u64 i1,    // ID
         u64 i2,    // Part
