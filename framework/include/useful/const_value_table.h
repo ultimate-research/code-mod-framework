@@ -3,6 +3,8 @@
 
 #include "lib/l2c_imports.h"
 
+using namespace lib;
+
 #define LUA_SCRIPT_LINE_MAX lua_const("LUA_SCRIPT_LINE_MAX")
 #define LUA_SCRIPT_LINE_SYSTEM lua_const("LUA_SCRIPT_LINE_SYSTEM")
 #define LUA_SCRIPT_LINE_SYSTEM_POST lua_const("LUA_SCRIPT_LINE_SYSTEM_POST")
