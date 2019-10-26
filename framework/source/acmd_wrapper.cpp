@@ -145,7 +145,7 @@ bool ACMD::_is_excute() {
     l2c_agent->clear_lua_stack();
     return excute;
 }
-void ACMD::wrap(u64 (*acmd_func)(u64), std::initializer_list<lib::L2CValue> list) {
+void ACMD::wrap(void (*acmd_func)(u64), std::initializer_list<lib::L2CValue> list) {
     l2c_agent->_clear_lua_stack();
     for (lib::L2CValue elem : list)
         l2c_agent->push_lua_stack(&elem);
