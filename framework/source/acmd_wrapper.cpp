@@ -50,8 +50,12 @@ u64 null_acmd_func(L2CAgent* l2c_agent, void* variadic) {
 
 bool ACMD::match() {
     u8 battle_object_category = (u8)(*(u32*)(module_accessor + 8) >> 28);
-    int battle_object_kind = app::utility::get_kind(module_accessor);
-    return battle_object_category == lua_const(category) && battle_object_kind == lua_const(kind);
+    if (kind == NULL) {
+        return battle_object_category == lua_const(category);
+    } else {
+        int battle_object_kind = app::utility::get_kind(module_accessor);
+        return battle_object_category == lua_const(category) && battle_object_kind == lua_const(kind);
+    }
 }
 
 void ACMD::nullify_original(L2CAgent* agent) {
