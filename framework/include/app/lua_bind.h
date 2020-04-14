@@ -1,6 +1,7 @@
 #pragma once
 #include "useful/useful.h"
 
+#include "../missing_types.h"
 #include "lua_bind/lib.h"
 #include "lua_bind/MotionAnimcmdModule.h"
 #include "lua_bind/LinkEventLassoHang.h"

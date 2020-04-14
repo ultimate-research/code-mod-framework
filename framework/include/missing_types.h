@@ -1,3 +1,5 @@
+#pragma once
+
 namespace app {
     namespace SoundModule {
         struct enSEType {};

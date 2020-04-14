@@ -3,6 +3,7 @@
 
 #include <switch_min.h>
 
+#include "missing_types.h"
 #include "app/lua_bind.h"
 #include "app/sv_animcmd.h"
 #include "app/sv_math.h"
