@@ -106,6 +106,10 @@ namespace lib {
             const char* get_format(void* variadic) asm("_ZNK3lib7utility8Variadic10get_formatEv") LINKABLE;
         }
     }
+
+    struct Rect {
+
+    };
 };
 
 #endif // L2C_IMPORTS_H
