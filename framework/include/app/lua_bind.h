@@ -2,6 +2,8 @@
 #include "useful/useful.h"
 
 #include "../missing_types.h"
+#include "../phx/phx.hpp"
+#include "../lib/l2c_imports.h"
 #include "lua_bind/lib.h"
 #include "lua_bind/MotionAnimcmdModule.h"
 #include "lua_bind/LinkEventLassoHang.h"
