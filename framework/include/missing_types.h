@@ -1,10 +1,12 @@
 #pragma once
 
+#include <switch_min.h>
+
 namespace app {
     namespace SoundModule {
         struct enSEType {};
     }
-    struct BattleObjectModuleAccessor {};
+	struct BattleObjectModuleAccessor {};
     struct LinkEventLassoHang {};
     struct AreaContactLog  {};
     struct FighterRidleyLinkEventMotion {};

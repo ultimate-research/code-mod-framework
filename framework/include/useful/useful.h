@@ -2,8 +2,8 @@
 #define USEFUL_H
 
 #include <switch_min.h>
-//#include <string.h>
-//#include <stdio.h>
+#include <string.h>
+#include <stdio.h>
 
 #define LOAD64 *(u64 *)
 
